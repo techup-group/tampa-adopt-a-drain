@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootswatch@4.4.1",
+      "destination": "wwwroot/bootswatch/"
+    },
+    {
+      "library": "font-awesome@5.12.1",
+      "destination": "wwwroot/font-awesome/"
+    }
+  ]
+}
