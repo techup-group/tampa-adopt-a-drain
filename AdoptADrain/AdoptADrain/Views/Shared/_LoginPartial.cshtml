@@ -14,7 +14,7 @@
         @if (!string.IsNullOrEmpty(options.EditProfilePolicyId))
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="AzureADB2C" asp-controller="Account" asp-action="EditProfile">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="EditProfile">
                     <span class="text-dark">Hello @User.Identity.Name!</span>
                 </a>
             </li>
@@ -26,13 +26,13 @@
             </li>
         }
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="AzureADB2C" asp-controller="Account" asp-action="SignOut">Sign out</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="SignOut">Sign out</a>
         </li>
 }
 else
 {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="AzureADB2C" asp-controller="Account" asp-action="SignIn">Sign in</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Session" asp-action="SignIn">Sign in</a>
         </li>
 }
 </ul>
