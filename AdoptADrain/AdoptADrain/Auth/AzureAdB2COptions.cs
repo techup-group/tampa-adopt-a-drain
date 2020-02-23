@@ -9,11 +9,6 @@ namespace AdoptADrain.Auth
     {
         public const string PolicyAuthenticationProperty = "Policy";
 
-        public AzureAdB2COptions()
-        {
-            AzureAdB2CInstance = "https://adoptadrain.b2clogin.com/tfp";
-        }
-
         public string ClientId { get; set; }
         public string AzureAdB2CInstance { get; set; }
         public string Tenant { get; set; }
