@@ -28,7 +28,22 @@ namespace AdoptADrain.Controllers
             return View();
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
         public IActionResult CreditTo()
+        {
+            return View();
+        }
+
+        public IActionResult AdoptADrain()
         {
             return View();
         }
