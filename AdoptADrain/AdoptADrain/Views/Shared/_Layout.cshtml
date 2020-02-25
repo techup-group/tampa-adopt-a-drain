@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject IConfiguration configuration
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -57,10 +58,24 @@
     <div class="pageContent">
         @RenderBody()
     </div>
+    @*<style>
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <div id="map"></div>*@
     <!-- Footer -->
     <footer class="py-3">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy;Code for Tampa Bay @DateTime.Now.Year</p>
+            <p class="m-0 text-center text-white">Copyright &copy; Code for Tampa Bay @DateTime.Now.Year</p>
         </div>
         <!-- /.container -->
     </footer>
@@ -83,7 +98,16 @@
         <script src="~/font-awesome/js/all.min.js"></script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    @*<script>
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 8
+            });
+        }
+    </script>*@
+    <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]&callback=initMap" async defer></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
