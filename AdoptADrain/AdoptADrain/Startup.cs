@@ -40,6 +40,7 @@ namespace AdoptADrain
             .AddCookie();
             services.AddControllersWithViews();
             services.AddRazorPages();
+           
 
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
