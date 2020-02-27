@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-AdoptADrain-72EBCE4C-D345-454D-B605-57753EB4AC45</UserSecretsId>
+    <StartupObject>AdoptADrain.Program</StartupObject>
   </PropertyGroup>
 
 
