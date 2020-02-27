@@ -49,6 +49,8 @@ namespace AdoptADrain
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            services.AddProgressiveWebApp();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +69,7 @@ namespace AdoptADrain
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
-
+            
             app.UseRouting();
 
             app.UseAuthentication();
