@@ -17,7 +17,7 @@
 </div>
 
 
-<div class="fullWidthContainer aad-mid">
+<div id="WAAD" class="fullWidthContainer aad-mid">
     <div class="container">
         <div class="p-5 text-center">
             <h3 class="mb-3">Why Adopt A Drain?</h3>
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<div class="container">
+<div id="AAD" class="container">
     <div class="p-5 text-center">
         <h3 class="mb-3">Adopting A Drain</h3>
         <p>Thank you for your interest in adopting one or more of Tampa's storm drains. By pledging to keep your drain free of leaves and debris, you are joining your neighbors in helping to protect the environment, manage stormwater, and minimize flooding.</p>
@@ -47,12 +47,20 @@
     </div>
 </div>
 
-<div class="d-flex aad-mid">
-    <div class="flex-fill" id="map"></div>
-    <div class="mapEnter align-self-center text-center"><h3>Enter your address to view nearby drains.</h3></div>
+<div class="d-md-flex aad-mid">
+    <div class="col-12 col-md-8" id="map"></div>
+    <div class="col-12 col-md-4 mapEnter align-self-center text-center">
+        <div class="mb-0 mb-md-5">
+            <label for="drainFind" class="h3">
+                Enter your address to view nearby drains.
+            </label>
+            <input id="drainFind" placeholder="1234 Address" class="w-100" autocomplete="off">
+        </div>
+
+    </div>
 </div>
 
-<div class="fullWidthContainer aad-dark">
+<div id="HTCAD" class="fullWidthContainer aad-dark">
     <div class="container">
         <div class="p-5 ">
             <div class="row text-white text-center">
@@ -61,7 +69,7 @@
             </div>
 
             <div class="row mt-3 justify-content-center ">
-                <div class="col-5 px-2 pt-4 pb-2  drainShadow">
+                <div class="col-md-5 px-2 pt-4 pb-2  drainShadow">
                     <h4 class="text-center">Care Your Adopted Drain</h4>
                     <ul>
                         <li>If possible, clear the drain before it starts raining.</li>
@@ -72,7 +80,7 @@
                 <div class="col-1">
                     &nbsp;
                 </div>
-                <div class="col-5 px-2 pt-4 pb-2 drainShadow ">
+                <div class="col-md-5 px-2 pt-4 pb-2 drainShadow ">
                     <h4 class="text-center">Safety & Tips</h4>
                     <ul>
                         <li>Always wear gloves and be careful of sharp objects hidden in leaves and trash.</li>
@@ -87,17 +95,17 @@
 </div>
 
 
-<div class="container">
+<div id="ABOUT" class="container">
     <div class="p-5 text-center">
         <h3 class="mb-3">About Tampa's Adopt A Drain Program</h3>
-        <div class="row">
-            <div class="col-sm-3">
+        <div class="row justify-content-center">
+            <div class="col-md-3 col-sm-4 col-6">
                 <img src="~/img/9374504.jpg" class="img-fluid img-thumbnail" />
             </div>
-            <div class="col-sm-3">
+            <div class="col-md-3 col-sm-4 col-6">
                 <img src="~/img/c4a.png" class="img-fluid img-thumbnail" />
             </div>
 
         </div>
     </div>
-</div>
+</div">

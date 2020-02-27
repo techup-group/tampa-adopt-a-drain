@@ -27,9 +27,9 @@ h2 {
     font-size: 3rem;
 }
 
-h3 {
+h3, .h3 {
     font-size: 2.25rem;
-    color: #135379;
+    color: #0c476a;
 }
 
 h4 {
@@ -66,17 +66,52 @@ nav {
     background-color: RGBa(17, 44, 70,.95);
 }
 .navbar {
-    padding: 5px;
+    padding: 16px 15px 15px;
 }
+.nav-item {
+    font-size: .9rem;
+    padding: 0 15px;
+    font-weight: 500;
+    border-right: 1px solid #FFF;
+}
+.nav-item:last-of-type {
+    border: 0;
+}
+    .nav-item a {
+        color: #FFF;
+    }
 .hero {
     background-color: #FFF;
     background-image: url(/img/hero.jpg);
-    /*background-attachment: fixed;*/
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;
     padding: 240px 0 200px;
     color: #FFF;
+}
+@media (max-width: 991px) {
+    .hero {
+        background-attachment: fixed;
+        padding: 200px 0 180px
+    }
+        .hero h1 {
+            font-size: 3rem;
+        }
+        h3, .h3 {
+            font-size: 2rem;
+        }
+}
+@media (max-width: 576px) {
+    .hero {
+        padding: 150px 0 120px
+    }
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero h3 {
+            font-size: 1.6rem;
+        }
 }
     .hero h3 {
         color: #BAD5F2;
@@ -98,24 +133,29 @@ footer {
 .fullWidthContainer {
 }
 
+input {
+    border-radius: 50px;
+    background-color: #fbfbfb;
+    border: 0;
+    padding: 10px 20px;
+}
+#map {
+    height: 100%;
+}
+@media (max-width: 771px) {
+    #map {
+        padding-top: 300px !important;
+        height: 400px !important;
+    }
+}
 .mapEnter {
-    padding: 50px;
-    width: 40%;
+    padding: 30px;
 }
 
 .drainShadow {
     /*box-shadow: inset .3rem .3rem .6rem rgba(0, 0, 0, 0.4);*/
     background-color: #132C42;
     color: #FFF;
-}
-
-
-
-
-
-
-#map {
-    height: 100%;
 }
 
 
