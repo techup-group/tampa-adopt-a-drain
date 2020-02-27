@@ -338,3 +338,5 @@ __pycache__/
 BuildOutput
 UI/MembersUI/appsettings.json
 *.pubxml
+
+*.config
