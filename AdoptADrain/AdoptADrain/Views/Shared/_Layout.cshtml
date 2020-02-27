@@ -28,7 +28,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark aad-primary-color fixed-top">
         <div class="container">
-            <a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="">Adopt A Drain</a>
+            <a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="">Tampa's Adopt A Drain</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -37,7 +37,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-action="Index" asp-controller="Home" asp-area="">Home</a>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a class="nav-link" asp-action="About" asp-controller="Home" asp-area="">About</a>
                     </li>
                     <li class="nav-item">
@@ -48,7 +48,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-action="CreditTo" asp-controller="Home" asp-area="">Sponsors</a>
-                    </li>
+                    </li>*@
                 </ul>
             </div>
         </div>
@@ -58,24 +58,10 @@
     <div class="pageContent">
         @RenderBody()
     </div>
-    @*<style>
-        /* Always set the map height explicitly to define the size of the div
-        * element that contains the map. */
-        #map {
-            height: 100%;
-        }
-        /* Optional: Makes the sample page fill the window. */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-    <div id="map"></div>*@
     <!-- Footer -->
     <footer class="py-3">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Code for Tampa Bay @DateTime.Now.Year</p>
+            <p class="m-0 text-center text-white">&copy; @DateTime.Now.Year  Code for Tampa Bay </p>
         </div>
         <!-- /.container -->
     </footer>
@@ -98,7 +84,7 @@
         <script src="~/font-awesome/js/all.min.js"></script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*<script>
+    <script>
         var map;
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
@@ -106,8 +92,8 @@
                 zoom: 8
             });
         }
-    </script>*@
-    @*<script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]&callback=initMap" async defer></script>*@
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]&callback=initMap" async defer></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

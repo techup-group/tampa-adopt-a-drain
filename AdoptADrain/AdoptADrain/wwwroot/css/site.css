@@ -5,12 +5,11 @@ for details on configuring this project to bundle and minify static web assets. 
 @import url('https://fonts.googleapis.com/css?family=Questrial:400&display=swap');
 
 /*body text*/
-@import url('https://fonts.googleapis.com/css?family=Catamaran:300,400,600&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Catamaran:300,400,500,600&display=swap');
 
 body {
-    padding-top: 56px;
     font-family: 'Catamaran', sans-serif;
-    font-weight: 400;
+    font-weight: 300;
     font-size: 18px;
     line-height: 1.15;
 }
@@ -30,6 +29,7 @@ h2 {
 
 h3 {
     font-size: 2.25rem;
+    color: #135379;
 }
 
 h4 {
@@ -45,29 +45,83 @@ p {
     margin-bottom: 15px;
 }
 
+li {
+    font-size: .98em;
+}
+
 .btn {
     font-size: 1.15rem;
-    font-weight: 600;
-    padding: 10px 24px;
+    font-weight: 500;
+    padding: 12px 28px;
     border-radius: 24px;
-    background-color: #3385D6;
+    background-color: #217FD3;
     border: 0;
 }
+    .btn:hover {
+        background-color: #1672D3;
+    }
 
 nav {
-    background-color: #1D4C7A;
+    /*background-color: #1D4C7A;*/
+    background-color: RGBa(17, 44, 70,.95);
 }
-
+.navbar {
+    padding: 5px;
+}
+.hero {
+    background-color: #FFF;
+    background-image: url(/img/hero.jpg);
+    /*background-attachment: fixed;*/
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 240px 0 200px;
+    color: #FFF;
+}
+    .hero h3 {
+        color: #BAD5F2;
+    }
 footer {
-    background-color: #1D4C7A;
+    background-color: RGB(17, 44, 70);
 }
 
-.aad-dark {
-    background-color: #456280;
+.aad-mid {
+    background-color: #d6e6f7;
 }
+.aad-dark {
+    background-color: #1b3d5c;
+}
+    .aad-dark h3 {
+        color: #FFF;
+    }
 
 .fullWidthContainer {
 }
+
+.mapEnter {
+    padding: 50px;
+    width: 40%;
+}
+
+.drainShadow {
+    /*box-shadow: inset .3rem .3rem .6rem rgba(0, 0, 0, 0.4);*/
+    background-color: #132C42;
+    color: #FFF;
+}
+
+
+
+
+
+
+#map {
+    height: 100%;
+}
+
+
+
+
+
 
 
 /**COLOR PALETTES**/
