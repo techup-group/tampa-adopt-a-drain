@@ -93,7 +93,6 @@ dlldata.c
 # .NET Core
 project.lock.json
 project.fragment.lock.json
-appsettings.json
 appsettings.Development.json
 artifacts/
 **/Properties/launchSettings.json
