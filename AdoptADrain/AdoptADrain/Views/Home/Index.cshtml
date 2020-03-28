@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="fullWidthContainer hero">
+    <div class="container">
+        <!-- Heading Row -->
+        <div class="row align-items-center">
+            <div class="col-lg-12 text-center ">
+                <h1 class="mb-0">Protect Tampa's Water</h1>
+                <h3 class="mb-4">Help keep our water pollution-free!</h3>
+                <a class="btn btn-primary" asp-action="AdoptADrain" asp-controller="Home" asp-area="">Adopt A Drain</a>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+</div>
+
+
+<div id="WAAD" class="fullWidthContainer aad-mid">
+    <div class="container">
+        <div class="p-5 text-center">
+            <h3 class="mb-3">Why Adopt A Drain?</h3>
+            @*<p>According to estimates from the U.S. Bureau of Labor Statistics, about 1 in 4 Americans donate their time each year as volunteers. A growing number of U.S. municipalities are capitalizing on residents’ willingness to pitch in with new volunteer programs that support stormwater management and protect vulnerable waterways. </p>*@
+
+            <p>When it rains, stormwater carries grass clippings, leaves, cigarette butts, pesticides, fertilizers, antifreeze, paint, gasoline, motor oil, and animal waste directly into lakes, and creeks. Tampa residents and businesses can help keep our waterbodies clean by adopting storm drains in their neighborhood and committing to cleaning them regularly.</p>
+            <p>
+                Adopting a neighborhood storm drain is an easy way for residents to improve their local waterways.
+                Some storm drains are placed, unfortunately, in some not so pristine evironments collecting water from sidewalks, roads and drain pipes. Drain blockage by debris is a frequent issue and main cause
+                of flooding which results in drains not operating correctly. This blockage can cause damage to the surrounding environment. Different kinds of debris can cause drain blockage and that is why we are organizing residents to support overseeing their drains, taking action or reporting to the county for greater concerns or assistance.
+            </p>
+            @*<p>
+                    In addition to storm drain blockage another major concern is the illegal dumping of harmful liquids and solids.
+                    The moving water can become mixed with chemicals, pesticides, fertilizers, motor oil and car fluids which runoff from homes and businesses.
+                    Stormwater pollution poses a health risk, harms marine life, closes beaches, contaminates the ocean, impacts the economy, harms the environment, affects neighborhoods and property values, clogs gutters and catch basins, attracts rodents, creates unpleasant odors, and adds to the city's operating expenses.
+                </p>*@
+        </div>
+
+    </div>
+</div>
+
+<div id="AAD" class="container">
+    <div class="p-5 text-center">
+        <h3 class="mb-3">Adopting A Drain</h3>
+        <p>Thank you for your interest in adopting one or more of Tampa's storm drains. By pledging to keep your drain free of leaves and debris, you are joining your neighbors in helping to protect the environment, manage stormwater, and minimize flooding.</p>
+        <p>Tampa's Adopt A Drain asks residents to adopt a drain in their neighborhood and commit to keeping it clear of leaves and other debris to reduce water pollution. </p>
+    </div>
+</div>
+
+<div class="d-md-flex aad-mid">
+    <div class="col-12 col-md-8" id="map"></div>
+    <div class="col-12 col-md-4 mapEnter align-self-center text-center">
+        <div class="mb-0 mb-md-5">
+            <label for="drainFind" class="h3">
+                Enter your address to view nearby drains.
+            </label>
+            <input id="drainFind" placeholder="1234 Address" class="w-100" autocomplete="off">
+        </div>
+
+    </div>
+</div>
+
+<div id="HTCAD" class="fullWidthContainer aad-dark">
+    <div class="container">
+        <div class="p-5 ">
+            <div class="row text-white text-center">
+                <h3 class="mb-3 mx-auto">How To Clear A Drain</h3>
+                <p>Once you have adopted "your" storm drain, sweep and rake the leaves and other debris from the surface of the drain year-round and dispose of it properly. </p>
+            </div>
+
+            <div class="row mt-3 justify-content-center ">
+                <div class="col-md-5 px-2 pt-4 pb-2  drainShadow">
+                    <h4 class="text-center">Care Your Adopted Drain</h4>
+                    <ul>
+                        <li>If possible, clear the drain before it starts raining.</li>
+                        <li>To dispose of waste, place it in the appropriate receptacle: trash, and recyclables (glass, plastic bottles, cans).</li>
+                        <li>Clear only the surface of the drain and the area around it.</li>
+                    </ul>
+                </div>
+                <div class="col-1">
+                    &nbsp;
+                </div>
+                <div class="col-md-5 px-2 pt-4 pb-2 drainShadow ">
+                    <h4 class="text-center">Safety & Tips</h4>
+                    <ul>
+                        <li>Always wear gloves and be careful of sharp objects hidden in leaves and trash.</li>
+                        <li>Never try to lift the drain grate.</li>
+                        <li>Consider wearing reflective clothing so vehicles can see you.</li>
+                        <li>Use a rake, broom, or shovel - <i>not your hands</i>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="ABOUT" class="container">
+    <div class="p-5 text-center">
+        <h3 class="mb-3">About Tampa's Adopt A Drain Program</h3>
+        <div class="row justify-content-center">
+            <div class="col-md-3 col-sm-4 col-6">
+                <img src="~/img/9374504.jpg" class="img-fluid img-thumbnail" />
+            </div>
+            <div class="col-md-3 col-sm-4 col-6">
+                <img src="~/img/c4a.png" class="img-fluid img-thumbnail" />
+            </div>
+
+        </div>
+    </div>
+</div">
