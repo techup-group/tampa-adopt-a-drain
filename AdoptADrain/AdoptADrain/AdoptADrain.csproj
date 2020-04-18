@@ -28,6 +28,8 @@
 
 
   <ItemGroup>
+    <Folder Include="Areas\Adopt\Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 

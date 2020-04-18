@@ -1,19 +1,46 @@
-﻿using AdoptADrain.DomainModels;
+﻿using System;
+using AdoptADrain.DomainModels;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace AdoptADrain.Services
 {
-    public class AdoptADrainDataContext : DbContext
+    public partial class AdoptADrainDataContext : DbContext
     {
-
-        public AdoptADrainDataContext(DbContextOptions options)
-         : base(options)
+        public static readonly IConfiguration configuration;
+        public AdoptADrainDataContext()
         {
         }
-        public DbSet<StormDrain> StormDrain { get; set; }
+
+        public AdoptADrainDataContext(DbContextOptions<AdoptADrainDataContext> options)
+            : base(options)
+        {
+        }
+
+        //Domain Model Classes
+        public virtual DbSet<StormDrain> StormDrain{ get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql(configuration["DefaultConnection"]);
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StormDrain>(entity =>
+            {
+                entity.ToTable("StormDrain", "Drain");
+
+                entity.Property(e => e.StormDrainId).ValueGeneratedOnAdd();
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

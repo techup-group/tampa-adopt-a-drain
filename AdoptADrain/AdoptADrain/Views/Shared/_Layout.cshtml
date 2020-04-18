@@ -9,7 +9,7 @@
     <environment include="Development">
         <link href="~/bootswatch/flatly/bootstrap.css" rel="stylesheet" />
         <link href="~/font-awesome/css/all.css" rel="stylesheet" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 
     </environment>
     <environment exclude="Development">
@@ -20,7 +20,7 @@
               crossorigin="anonymous"
               integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
         <link href="~/font-awesome/css/all.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="~/css/site.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     </environment>
 
@@ -36,7 +36,8 @@
                 <li class="nav-item active"><a href="#AAD">Adopting A Drain</a></li>
                 <li class="nav-item active"><a href="#HTCAD">How To Clear A Drain</a></li>
                 <li class="nav-item active"><a href="#ABOUT">About Tampa's Adopt A Drain Program</a></li>
-                </ul>
+                <li class="nav-item active"><a asp-controller="Drain" asp-action="Adopt" asp-area="Adopt">Login</a></li>
+            </ul>
                 @*<a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="">Tampa's Adopt A Drain</a>*@
                 @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -109,7 +110,7 @@
             });
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]&callback=initMap" async defer></script>
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]&callback=initMap" async defer></script>*@
     @RenderSection("Scripts", required: false)
 </body>
 </html>

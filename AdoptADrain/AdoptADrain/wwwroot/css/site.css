@@ -436,3 +436,8 @@ input {
         opacity: 0.4;
     }
 }
+
+/***Adopt AREA****/
+.adoptAreaContent {
+    padding-top: 56px;
+}

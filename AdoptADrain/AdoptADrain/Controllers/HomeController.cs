@@ -7,32 +7,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AdoptADrain.Models;
 using AdoptADrain.Services;
-using AdoptADrain.DomainModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdoptADrain.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly d3omdkfrp7dkmiContext _context;
 
-        public HomeController(ILogger<HomeController> logger, d3omdkfrp7dkmiContext context)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _context = context;
         }
 
         public IActionResult Index()
         {
             return View();
-        }
-
-        public IActionResult Test()
-        {
-            _context.Add(new StormDrain { StormDrainId = 2, Name = "First" });
-
-            _context.SaveChanges();
-            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -41,6 +31,5 @@ namespace AdoptADrain.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        
     }
 }

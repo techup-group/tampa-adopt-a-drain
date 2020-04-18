@@ -1,20 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AdoptADrain.Auth;
 using AdoptADrain.Services;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace AdoptADrain
@@ -40,10 +35,10 @@ namespace AdoptADrain
             })
             .AddAzureAdB2C(options => Configuration.Bind("Authentication:AzureAdB2C", options))
             .AddCookie();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages().AddRazorRuntimeCompilation();
            
-
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
@@ -52,10 +47,10 @@ namespace AdoptADrain
                 options.Cookie.IsEssential = true;
             });
 
-            services.AddProgressiveWebApp();
-
-            services.AddDbContext<d3omdkfrp7dkmiContext>(options =>
+            //services.AddProgressiveWebApp();
+            services.AddDbContext<AdoptADrainDataContext>(options =>
             options.UseNpgsql(Configuration["DefaultConnection"]));
+
 
         }
 
@@ -83,10 +78,14 @@ namespace AdoptADrain
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                   name: "AdoptADrain",
+                   areaName: "Adopt",
+                   pattern: "Adopt/{controller=Dashboard}/{action=Manage}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }
