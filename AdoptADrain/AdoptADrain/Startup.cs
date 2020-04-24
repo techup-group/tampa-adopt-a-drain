@@ -1,5 +1,6 @@
 using System;
 using AdoptADrain.Auth;
+using AdoptADrain.DomainModels;
 using AdoptADrain.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -37,7 +38,6 @@ namespace AdoptADrain
             .AddCookie();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddRazorPages().AddRazorRuntimeCompilation();
            
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
@@ -51,6 +51,9 @@ namespace AdoptADrain
             services.AddDbContext<AdoptADrainDataContext>(options =>
             options.UseNpgsql(Configuration["DefaultConnection"]));
 
+            //Context
+            //Service Classes
+            services.TryAddScoped<IDrainService, DrainService>();
 
         }
 

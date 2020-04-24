@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AdoptADrain.Services
+namespace AdoptADrain.Models
 {
-    public class StormDrainService
+    public class UserAdoptedDrainsVM
     {
-
-    }       
+        public List<Drain> AdoptedDrains { get; set; }
+    }
 }

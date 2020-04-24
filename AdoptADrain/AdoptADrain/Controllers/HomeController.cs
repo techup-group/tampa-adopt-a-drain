@@ -14,13 +14,14 @@ namespace AdoptADrain.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private IDrainService _drainService;
+        public HomeController(ILogger<HomeController> logger, IDrainService drainService)
         {
             _logger = logger;
+            _drainService = drainService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
