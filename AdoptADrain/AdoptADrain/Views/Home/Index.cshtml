@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@inject IConfiguration configuration
 
 <div class="fullWidthContainer hero">
     <div class="container">
@@ -113,3 +114,15 @@
         </div>
     </div>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
+<script>
+    'use strict'
+    var map, infoWindow;
+    initMap();
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 27.949536, lng: -82.452229 },
+            zoom: 12
+        });
+    }
+</script>
