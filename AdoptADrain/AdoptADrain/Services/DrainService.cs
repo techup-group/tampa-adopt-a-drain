@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace AdoptADrain.Services
@@ -20,6 +21,7 @@ namespace AdoptADrain.Services
             _mapper = mapper;
         }
 
+        #region Create
         public async Task<int> CreateDrain(Drain drain)
         {
             await _context.AddAsync(drain);
@@ -40,15 +42,50 @@ namespace AdoptADrain.Services
             await _context.SaveChangesAsync();
             return flowDirection.FlowDirectionId;
         }
-
+        #endregion Create
+        
+        #region Get
         public Task<Drain> GetDrain(int drainId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Drain>> GetDrainAll()
+        public async Task<List<DrainDTO>> GetDrainAll(DrainSearchOptions opts)
         {
-            throw new NotImplementedException();
+            var drains = _context.Drain
+                .Include(x => x.FlowDirection)
+                .Include(x => x.RoadType)
+                .Include(x => x.DrainType)
+                .Include(x => x.DrainStatusHistory);
+
+            if (opts.FlowDirectionId > 0)
+            {
+                drains.Where(x => x.FlowDirectionId == opts.FlowDirectionId);
+            }
+
+            if(opts.DrainTypeId > 0)
+            {
+                drains.Where(x => x.DrainTypeId == opts.DrainTypeId);
+            }
+
+            if (opts.RoadTypeId > 0)
+            {
+                drains.Where(x => x.RoadTypeId == opts.RoadTypeId);
+            }
+
+            if (opts.excludeAdopted)
+            {
+                drains.Where(x => !x.IsAdopted);
+            }
+
+            if (!String.IsNullOrEmpty(opts.AdoptedUserId))
+            {
+                drains.Where(x => x.AdoptedUserId == opts.AdoptedUserId);
+            }
+
+            List<Drain> drainList = await drains.ToListAsync();
+
+            return _mapper.Map<List<DrainDTO>>(drainList);
         }
 
         public async Task<List<FlowDirectionDTO>> GetFlowDirectionAll()
@@ -56,6 +93,8 @@ namespace AdoptADrain.Services
             var flowDirection =  await _context.FlowDirection.ToListAsync();
             return _mapper.Map<List<FlowDirectionDTO>>(flowDirection);
         }
+
+        #endregion Get
 
         public Task<int> RemoveDrain(int drainId)
         {

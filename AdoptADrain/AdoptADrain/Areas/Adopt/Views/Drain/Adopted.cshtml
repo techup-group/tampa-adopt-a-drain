@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "AdoptedDrains";
+    Layout = "~/Areas/Adopt/Views/Shared/_AdoptLayout.cshtml";
+}
+
+@inject IConfiguration _config
+@model AdoptADrain.Areas.Adopt.ViewModels.UserAdoptedDrainsVM
+    <div class="container">
+        <div class="row">
+            <h4 class="display-4">Welcome @User.Identity.Name</h4>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="lead">Your adopted drains</p>
+                <ul class="list-group list-group-flush">
+                    @foreach (var adoptedDrain in Model.AdoptedDrains)
+                    {
+                        <li class="list-group-item">@adoptedDrain.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="lead">Available Drains for Adoption</p>
+                <ul class="list-group list-group-flush">
+                    @foreach (var adoptedDrain in Model.AvailableDrains)
+                    {
+                        <li class="list-group-item">@adoptedDrain.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+

@@ -14,7 +14,7 @@ namespace AdoptADrain.Areas.Adopt.Models
         public int? DrainTypeId { get; set; }
         public int? RoadTypeId { get; set; }
         public bool IsAdopted { get; set; }
-        public int? AdoptedUserId { get; set; }
+        public string AdoptedUserId { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdoptADrain.Areas.Adopt.Controllers;
 using AdoptADrain.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -41,7 +42,7 @@ namespace AdoptADrain.Controllers
         [HttpGet]
         public IActionResult EditProfile()
         {
-            var redirectUrl = Url.Action(nameof(HomeController.Index), "Home");
+            var redirectUrl = Url.Action("Adopt", "Drain", new { Area="Adopt" });
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
             properties.Items[AzureAdB2COptions.PolicyAuthenticationProperty] = AzureAdB2COptions.EditProfilePolicyId;
             return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);

@@ -19,7 +19,7 @@ namespace AdoptADrain.DomainModels
         public DateTime? CreateDttm { get; set; }
         public string ChangeUser { get; set; }
         public DateTime? ChangeDttm { get; set; }
-        public int? AdoptedUserId { get; set; }
+        public string AdoptedUserId { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
 

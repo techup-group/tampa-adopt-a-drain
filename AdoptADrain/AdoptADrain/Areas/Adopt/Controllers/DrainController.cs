@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdoptADrain.Areas.Adopt.Models;
+using AdoptADrain.Areas.Adopt.ViewModels;
 using AdoptADrain.DomainModels;
 using AdoptADrain.Services;
 using AutoMapper;
@@ -27,9 +28,22 @@ namespace AdoptADrain.Areas.Adopt.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Adopt()
+        public async Task<IActionResult> Adopted()
         {
-            
+            //Get drains for user
+            string userObjectId = User.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+
+            //User Drains
+            List<DrainDTO> userDrains = await _drainService.GetDrainAll(new DrainSearchOptions { AdoptedUserId = userObjectId });
+
+            //Available Drains
+            List<DrainDTO> availableDrains = await _drainService.GetDrainAll(new DrainSearchOptions { excludeAdopted = true });
+
+            return View(new UserAdoptedDrainsVM { AdoptedDrains = userDrains, AvailableDrains = availableDrains });
+        }
+
+        public async Task<IActionResult> Register()
+        {
             return View();
         }
 
