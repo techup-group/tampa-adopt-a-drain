@@ -16,9 +16,9 @@
             <div class="col-sm-12 pb-5">
                 @* No Drains *@
                 <h4>Get started by adopting your first drain!</h4>
-                <a class="btn btn-primary" href="#">Adopt A Drain</a>
+                <a class="btn btn-primary" asp-controller="Drain" asp-action="Adopt" asp-area="Adopt">Adopt A Drain</a>
 
-                @* Has Drains *@
+                @* Has Drains List the Drains *@
                 @*<h3>Your adopted drains:</h3>
                 <ul class="list-group list-group-flush">
                     @foreach (var adoptedDrain in Model.AdoptedDrains)
@@ -29,20 +29,8 @@
             </div>
         </div>
 
-        @*<div class="row">
-            <div class="col-sm-12">
-                <p class="lead">Available Drains for Adoption</p>
-                <ul class="list-group list-group-flush">
-                    @foreach (var adoptedDrain in Model.AvailableDrains)
-                    {
-                        <li class="list-group-item">@adoptedDrain.Name</li>
-                    }
-                </ul>
-            </div>
-        </div>*@
-
-
-
-    <div class="text-center mb-1"><a asp-controller="Drain" asp-action="Register" asp-area="Adopt">Don't see a drain? Register it!</a></div>
+    <div class="text-center mb-1">
+        <a asp-controller="Drain" asp-action="Register" asp-area="Adopt">Don't see a drain? Register it!</a>
+    </div>
     </div>
 

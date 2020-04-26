@@ -42,6 +42,11 @@ namespace AdoptADrain.Areas.Adopt.Controllers
             return View(new UserAdoptedDrainsVM { AdoptedDrains = userDrains, AvailableDrains = availableDrains });
         }
 
+        public async Task<IActionResult> Adopt()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Register()
         {
             return View();
@@ -52,19 +57,5 @@ namespace AdoptADrain.Areas.Adopt.Controllers
             return View();
         }
 
-        public async Task<IActionResult> FlowDirection()
-        {
-            List<FlowDirectionDTO> flowDirectionList = await _drainService.GetFlowDirectionAll();
-            return View(flowDirectionList);
-        }
-
-        public async Task<IActionResult> CreateFlowDirection(FlowDirectionDTO flowDirection)
-        {
-            FlowDirection newFlowDirection = _mapper.Map<FlowDirection>(flowDirection);
-
-            await _drainService.CreateFlowDirection(newFlowDirection);
-
-            return Ok();
-        }
     }
 }
