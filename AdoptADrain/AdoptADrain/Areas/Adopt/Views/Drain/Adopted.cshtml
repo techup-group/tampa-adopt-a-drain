@@ -8,21 +8,29 @@
 @model AdoptADrain.Areas.Adopt.ViewModels.UserAdoptedDrainsVM
     <div class="container">
         <div class="row">
-            <h4 class="display-4">Welcome @User.Identity.Name</h4>
+            <div class="col-sm-12">
+                <h4 class="display-4 pt-3">Welcome @User.Identity.Name</h4>
+            </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <p class="lead">Your adopted drains</p>
+            <div class="col-sm-12 pb-5">
+                @* No Drains *@
+                <h4>Get started by adopting your first drain!</h4>
+                <a class="btn btn-primary" href="#">Adopt A Drain</a>
+                
+                @* Has Drains *@
+                @*<h3>Your adopted drains:</h3>
                 <ul class="list-group list-group-flush">
                     @foreach (var adoptedDrain in Model.AdoptedDrains)
                     {
                         <li class="list-group-item">@adoptedDrain.Name</li>
                     }
-                </ul>
+                </ul>*@
+                </div>
             </div>
         </div>
 
-        <div class="row">
+        @*<div class="row">
             <div class="col-sm-12">
                 <p class="lead">Available Drains for Adoption</p>
                 <ul class="list-group list-group-flush">
@@ -32,6 +40,6 @@
                     }
                 </ul>
             </div>
-        </div>
+        </div>*@
     </div>
 

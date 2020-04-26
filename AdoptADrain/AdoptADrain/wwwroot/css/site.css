@@ -49,6 +49,10 @@ li {
     font-size: .98em;
 }
 
+.row + .row {
+    margin-top: 15px;
+}
+
 .btn {
     font-size: 1.15rem;
     font-weight: 500;
@@ -88,10 +92,6 @@ nav {
     .nav-item a {
         color: #FFF;
     }
-    @media (max-width: 991px ) {
-        .nav-item {
-        }
-    }
 .hero {
     background-color: #FFF;
     background-image: url(/img/hero.jpg);
@@ -120,14 +120,22 @@ nav {
         .hero h1 {
             font-size: 2.5rem;
         }
-
         .hero h3 {
             font-size: 1.6rem;
         }
 }
-    .hero h3 {
-        color: #BAD5F2;
+@media (max-width: 500px ) {
+    .hero {
+        padding: 90px 0 120px;
     }
+    .navbar.fixed-top {
+        position: relative;
+        background-color: rgb(17, 44, 70);
+    }
+}
+.hero h3 {
+    color: #BAD5F2;
+}
 footer {
     background-color: RGB(17, 44, 70);
 }
@@ -438,6 +446,31 @@ input {
 }
 
 /***Adopt AREA****/
-.adoptAreaContent {
-    padding-top: 56px;
+@media (min-width: 501px) {
+
+    .adoptAreaContent {
+        padding-top: 53px;
+    }
 }
+
+
+
+/* 
+    
+status
+which drains u have
+link to adopt more
+
+
+
+
+
+don't see a drain', register it
+
+
+
+map > btn in popup > pops a list below > confirm all selected
+
+
+
+*/
