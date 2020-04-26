@@ -1,6 +1,8 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@inject IConfiguration configuration
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,9 +39,9 @@
                         Profile
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item aad-primary-color text-black-50" asp-controller="Session" asp-action="EditProfile" asp-area="" >Edit</a>
+                        <a class="dropdown-item aad-primary-color text-black-50" asp-controller="Session" asp-action="EditProfile" asp-area="">Edit</a>
                         <div class="dropdown-divider"></div>
-                        <a  class="dropdown-item text-black-50" asp-controller="Session" asp-action="SignOut" asp-area="">Logout</a>
+                        <a class="dropdown-item text-black-50" asp-controller="Session" asp-action="SignOut" asp-area="">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -78,8 +80,8 @@
                 integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4="></script>
         <script src="~/font-awesome/js/all.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-
     </environment>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
