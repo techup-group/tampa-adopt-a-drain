@@ -1,10 +1,10 @@
-﻿using AdoptADrain.Areas.Adopt.Models;
+﻿using AdoptADrain.Areas.Manage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AdoptADrain.Areas.Adopt.ViewModels
+namespace AdoptADrain.Areas.Manage.ViewModels
 {
     public class UserAdoptedDrainsVM
     {

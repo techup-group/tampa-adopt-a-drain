@@ -1,4 +1,4 @@
-﻿using AdoptADrain.Areas.Adopt.Models;
+﻿using AdoptADrain.Areas.Manage.Models;
 using AdoptADrain.DomainModels;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
