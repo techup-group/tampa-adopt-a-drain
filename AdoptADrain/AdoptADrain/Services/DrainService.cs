@@ -1,4 +1,7 @@
-﻿using AdoptADrain.DomainModels;
+﻿using AdoptADrain.Areas.Adopt.Models;
+using AdoptADrain.DomainModels;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +12,12 @@ namespace AdoptADrain.Services
     public class DrainService : IDrainService
     {
         private readonly AdoptADrainDataContext _context;
+        private readonly IMapper _mapper;
 
-        public DrainService(AdoptADrainDataContext context)
+        public DrainService(AdoptADrainDataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<int> CreateDrain(Drain drain)
@@ -29,6 +34,13 @@ namespace AdoptADrain.Services
             return drainStatusHistory.DrainStatusHistoryId;
         }
 
+        public async Task<int> CreateFlowDirection(FlowDirection flowDirection)
+        {
+            await _context.AddAsync(flowDirection);
+            await _context.SaveChangesAsync();
+            return flowDirection.FlowDirectionId;
+        }
+
         public Task<Drain> GetDrain(int drainId)
         {
             throw new NotImplementedException();
@@ -37,6 +49,12 @@ namespace AdoptADrain.Services
         public Task<List<Drain>> GetDrainAll()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<FlowDirectionDTO>> GetFlowDirectionAll()
+        {
+            var flowDirection =  await _context.FlowDirection.ToListAsync();
+            return _mapper.Map<List<FlowDirectionDTO>>(flowDirection);
         }
 
         public Task<int> RemoveDrain(int drainId)

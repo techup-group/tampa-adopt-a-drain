@@ -4,5 +4,167 @@
     Layout = "~/Areas/Adopt/Views/Shared/_AdoptLayout.cshtml";
 }
 
-<h1>Abandon</h1>
+<style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+        height: 100%;
+        margin-left: 20%;
+        margin-right: 20%;
+        margin top: 10em;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<div class="container">
+    <h2>Report a Drain</h2>
+    <br>
+    <div class="row">
+        <div class="col-lg-12">
+            <section>
+
+                <div class="well well-lg">
+                    <form method="post" asp-controller="Drain" asp-action="Register">
+
+                        <div class="clearfix"></div>
+                        <h3>Drain Type</h3>
+                        <div class="form-group col-md-12">
+
+                            <div class="form-group col-md-2">
+                                <label class="form-check-label" for="curbsideRadio">Curbside</label>
+                                <input class="form-control" type="radio" name="DrainStatus" id="curbsideRadio" value="curbside" required>
+
+
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label class="form-check-label" for="gratedRadio">Grated</label>
+                                <input class="form-control" type="radio" name="inlineRadioOptions" id="gratedRadio" value="gratead" required>
+
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <h3>Road Type</h3>
+                        <div class="form-group col-md-12">
+
+                            <div class="form-group col-md-2">
+                                <label class="form-check-label" for="privateRadio">Private property</label>
+                                <input class="form-control" type="radio" name="inlineRadioOptions2" id="privateRadio" value="private" required>
+
+
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label class="form-check-label" for="publicRadio">Public Property</label>
+                                <input class="form-control" type="radio" name="inlineRadioOptions2" id="publicRadio" value="public" required>
+
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <h3>Drain Status</h3>
+                        <div class="form-group col-md-12">
+
+                            <div class="form-group col-md-2">
+                                <label class="form-check-label" for="privateRadio">Clear of debris</label>
+                                <input class="form-control" type="radio" name="inlineRadioOptions3" id="clearReadio" value="clear" required>
+
+
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label class="form-check-label" for="publicRadio">Partially Blocked</label>
+                                <input class="form-control" type="radio" name="inlineRadioOptions3" id="partialRadio" value="partial" required>
+
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label class="form-check-label" for="publicRadio">Completely Blocked</label>
+                                <input class="form-control" type="radio" name="inlineRadioOptions3" id="blockedRadio" value="blocked" required>
+
+                            </div>
+                        </div>
+
+                        <h3>Your Name (optional)</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputfirstname">First Name:</label>
+                                <input type="text" class="form-control" id="inputfirstname" placeholder="First Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputlastname">Last Name:</label>
+                                <input type="text" class="form-control" id="inputlastname" placeholder="Last Name">
+                                <br>
+                            </div>
+                        </div>
+
+                        <h3>Your Email (optional)</h3>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputemail">Email Address:</label>
+                                <input type="text" class="form-control" id="inputemail" placeholder="Email Address">
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<br>
+
+<div id="map"></div>
+<script>
+                  // Note: This example requires that you consent to location sharing when
+                  // prompted by your browser. If you see the error "The Geolocation service
+                  // failed.", it means you probably did not give permission for the browser to
+                  // locate you.
+                  // https://developers.google.com/maps/documentation/javascript/geolocation
+                  var map, infoWindow;
+                  function initMap() {
+                    map = new google.maps.Map(document.getElementById('map'), {
+                      center: {lat: 27.9506, lng: -82.4572},
+                      zoom: 12
+                    });
+                    infoWindow = new google.maps.InfoWindow;
+
+                    // Try HTML5 geolocation.
+                    if (navigator.geolocation) {
+                      navigator.geolocation.getCurrentPosition(function(position) {
+                        var pos = {
+                          lat: position.coords.latitude,
+                          lng: position.coords.longitude
+                        };
+
+                        infoWindow.setPosition(pos);
+                        infoWindow.setContent('Location found.');
+                        infoWindow.open(map);
+                        map.setCenter(pos);
+                      }, function() {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                      });
+                    } else {
+                      // Browser doesn't support Geolocation
+                      handleLocationError(false, infoWindow, map.getCenter());
+                    }
+                  }
+
+                  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent(browserHasGeolocation ?
+                                          'Error: The Geolocation service failed.' :
+                                          'Error: Your browser doesn\'t support geolocation.');
+                    infoWindow.open(map);
+                  }
+</script>
+
+@*<script src="https://maps.googleapis.com/maps/api/js?key=@_config["GoogleMaps:MapsJSApi"]&callback=initMap"
+        async defer></script>*@
 

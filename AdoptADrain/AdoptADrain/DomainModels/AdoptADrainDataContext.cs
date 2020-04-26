@@ -38,7 +38,7 @@ namespace AdoptADrain.DomainModels
             {
                 entity.ToTable("Drain", "Drain");
 
-                entity.Property(e => e.DrainId).HasDefaultValueSql("nextval('\"Drain\".\"StormDrain_StormDrainId_seq\"'::regclass)");
+                entity.Property(e => e.DrainId).HasDefaultValueSql("nextval('\"Drain\".\"Drain_DrainId_seq\"'::regclass)");
 
                 entity.Property(e => e.ChangeDttm).HasColumnType("timestamp with time zone");
 

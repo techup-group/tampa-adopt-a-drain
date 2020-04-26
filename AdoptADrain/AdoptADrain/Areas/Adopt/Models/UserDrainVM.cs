@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace AdoptADrain.Areas.Adopt.Models
 {
-    public class StormDrain
+    public class UserDrainVM
     {
-        public int DrainStatus { get; set; }
+        public List<DrainDTO> UserAdoptedDrains { get; set; }
     }
 }

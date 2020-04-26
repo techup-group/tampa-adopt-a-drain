@@ -2,6 +2,7 @@ using System;
 using AdoptADrain.Auth;
 using AdoptADrain.DomainModels;
 using AdoptADrain.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -37,6 +38,7 @@ namespace AdoptADrain
             .AddAzureAdB2C(options => Configuration.Bind("Authentication:AzureAdB2C", options))
             .AddCookie();
 
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
            
             services.AddDistributedMemoryCache();

@@ -1,4 +1,5 @@
-﻿using AdoptADrain.DomainModels;
+﻿using AdoptADrain.Areas.Adopt.Models;
+using AdoptADrain.DomainModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,19 @@ namespace AdoptADrain.Services
         /// <param name="drainId"></param>
         /// <returns>Drain</returns>
         Task<Drain> GetDrain(int drainId);
+
+        /// <summary>
+        /// Create Flow Direction
+        /// </summary>
+        /// <param name="flowDirection"></param>
+        /// <returns>FlowDirectionId Created</returns>
+        Task<int> CreateFlowDirection(FlowDirection flowDirection);
+
+        /// <summary>
+        /// Get All Drains
+        /// </summary>
+        /// <returns>Drain List</returns>
+        Task<List<FlowDirectionDTO>> GetFlowDirectionAll();
 
     }
 }
