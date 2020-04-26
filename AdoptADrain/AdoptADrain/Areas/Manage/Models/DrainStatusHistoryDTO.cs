@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AdoptADrain.Areas.Adopt.Models
+namespace AdoptADrain.Areas.Manage.Models
 {
     public partial class DrainStatusHistoryDTO
     {

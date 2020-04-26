@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AdoptADrain.Areas.Adopt.Models
+namespace AdoptADrain.Areas.Manage.Models
 {
     public class DrainDTO
     {

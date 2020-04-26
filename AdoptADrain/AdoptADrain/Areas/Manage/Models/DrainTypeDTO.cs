@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AdoptADrain.Areas.Adopt.Models
+namespace AdoptADrain.Areas.Manage.Models
 {
-    public class FlowDirectionDTO
+    public class DrainTypeDTO
     {
-        public int FlowDirectionId { get; set; }
+        public int DrainTypeId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }

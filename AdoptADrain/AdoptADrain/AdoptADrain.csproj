@@ -30,7 +30,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Areas\Adopt\Data\" />
+    <Folder Include="Areas\Manage\Data\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\Session\" />
     <Folder Include="wwwroot\img\" />
