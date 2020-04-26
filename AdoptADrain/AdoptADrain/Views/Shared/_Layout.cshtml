@@ -1,4 +1,4 @@
-﻿@inject IConfiguration configuration
+﻿
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,7 @@
     <environment include="Development">
         <link href="~/bootswatch/flatly/bootstrap.css" rel="stylesheet" />
         <link href="~/font-awesome/css/all.css" rel="stylesheet" />
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     </environment>
     <environment exclude="Development">
@@ -38,8 +38,8 @@
                 <li class="nav-item active"><a href="#ABOUT">About Tampa's Adopt A Drain Program</a></li>
                 <li class="nav-item active"><a asp-controller="Drain" asp-action="Adopted" asp-area="Adopt">Login</a></li>
             </ul>
-                @*<a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="">Tampa's Adopt A Drain</a>*@
-                @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            @*<a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="">Tampa's Adopt A Drain</a>*@
+            @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -101,16 +101,7 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
 
     </environment>
-    <script>
-        var map;
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: -34.397, lng: 150.644 },
-                zoom: 8
-            });
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]&callback=initMap" async defer></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
