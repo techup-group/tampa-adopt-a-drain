@@ -42,7 +42,7 @@ namespace AdoptADrain.Controllers
         [HttpGet]
         public IActionResult EditProfile()
         {
-            var redirectUrl = Url.Action("Adopted", "Drain", new { Area="Adopt" });
+            var redirectUrl = Url.Action("Adopted", "Drain", new { Area="Manage" });
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
             properties.Items[AzureAdB2COptions.PolicyAuthenticationProperty] = AzureAdB2COptions.EditProfilePolicyId;
             return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);
