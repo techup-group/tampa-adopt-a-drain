@@ -86,7 +86,7 @@ namespace AdoptADrain
                 endpoints.MapAreaControllerRoute(
                    name: "AdoptADrain",
                    areaName: "Manage",
-                   pattern: "Manage/{controller=Drain}/{action=Adopted}/{id?}");
+                   pattern: "Manage/{controller}/{action}/{id?}");
 
                 endpoints.MapControllerRoute(
                     name: "default",
