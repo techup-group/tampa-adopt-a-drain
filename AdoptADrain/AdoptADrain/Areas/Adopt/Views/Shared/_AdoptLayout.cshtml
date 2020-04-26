@@ -33,15 +33,15 @@
         <div class="container">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a asp-controller="Drain" asp-action="Adopted" asp-area="Adopt">Adopted Drains</a></li>
-                <li class="nav-item"><a asp-controller="Drain" asp-action="Register" asp-area="Adopt">Register Drain</a></li>
+                @*<li class="nav-item"><a asp-controller="Drain" asp-action="Register" asp-area="Adopt">Register Drain</a></li>*@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Profile
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item aad-primary-color text-black-50" asp-controller="Session" asp-action="EditProfile" asp-area="">Edit</a>
+                        <a class="dropdown-item aad-primary-color" asp-controller="Session" asp-action="EditProfile" asp-area="">Edit</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-black-50" asp-controller="Session" asp-action="SignOut" asp-area="">Logout</a>
+                        <a class="dropdown-item" asp-controller="Session" asp-action="SignOut" asp-area="">Logout</a>
                     </div>
                 </li>
             </ul>
