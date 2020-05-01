@@ -15,17 +15,24 @@
         <div class="row">
             <div class="col-sm-12 pb-5">
                 @* No Drains *@
-                <h4>Get started by adopting your first drain!</h4>
-                <a class="btn btn-primary" asp-controller="Drain" asp-action="Adopt" asp-area="Manage">Adopt A Drain</a>
-
-                @* Has Drains List the Drains *@
-                @*<h3>Your adopted drains:</h3>
-                <ul class="list-group list-group-flush">
-                    @foreach (var adoptedDrain in Model.AdoptedDrains)
-                    {
-                        <li class="list-group-item">@adoptedDrain.Name</li>
-                    }
-                </ul>*@
+                @if (Model.AdoptedDrains.Count == 0)
+                {
+                    <h4>Get started by adopting your first drain!</h4>
+                    <a class="btn btn-primary" asp-controller="Drain" asp-action="Adopt" asp-area="Manage">Adopt A Drain</a>
+                }
+                else
+                {
+                    @* Has Drains List the Drains *@
+                    <h3>Your adopted drains:</h3>
+                        <ul class="list-group list-group-flush">
+                        @foreach (var adoptedDrain in Model.AdoptedDrains)
+                        {
+                            <li class="list-group-item">
+                                @adoptedDrain.Name
+                            </li>
+                        }
+                        </ul>
+                }
             </div>
         </div>
 

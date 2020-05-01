@@ -4,115 +4,192 @@
     Layout = "~/Areas/Manage/Views/Shared/_AdoptLayout.cshtml";
 }
 @inject IConfiguration configuration
-
-    <style>
-         /* Always set the map height explicitly to define the size of the div
-        * element that contains the map. */
-        #map {
-            height: 100%;
-        }
-         
-    </style>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1 class="pt-3 pb-3">Register A Drain</h1>
-                <div id="map"></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputEmail4">Email</label>
-                        <input type="email" class="form-control" id="inputEmail4">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Password</label>
-                        <input type="password" class="form-control" id="inputPassword4">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputAddress">Address</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                </div>
-                <div class="form-group">
-                    <label for="inputAddress2">Address 2</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputCity">City</label>
-                        <input type="text" class="form-control" id="inputCity">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputState">State</label>
-                        <select id="inputState" class="form-control">
-                            <option selected>Choose...</option>
-                            <option>...</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="inputZip">Zip</label>
-                        <input type="text" class="form-control" id="inputZip">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck">
-                        <label class="form-check-label" for="gridCheck">
-                            Check me out
-                        </label>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign in</button>
-            </form>
-                </div>
+@inject AdoptADrain.Services.IDrainService _drainService
+@model AdoptADrain.Areas.Manage.Models.DrainDTO
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 class="pt-3 pb-3">Register A Drain</h1>
+            <ol class="list-group list-group-flush">
+                <li class="list-group-item">You will need to be as close as possible to the drain you wish to register.</li>
+                <li class="list-group-item">Once your location is obtained, please answer some details about the drain if you can.</li>
+                <li class="list-group-item">Proceed to registering the drain.</li>
+            </ol>
         </div>
     </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
-<script>
-    'use strict'
-    let map
-    let infoWindow;
-    initMap();
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 6
-        });
-        infoWindow = new google.maps.InfoWindow;
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 justify-content-center d-flex">
+            <a class="btn btn-primary w-25" href="javascript::;" id="setLocation">Set GPS Location</a>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-sm-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form id="registerForm" class="need-validation" novalidate>
+                        <div class="form-group">
+                            <label for="Name">Please provide a short description of the drain</label>
+                            <input class="form-control" asp-for="Name" placeholder="Short Description" required />
+                            <div class="invalid-feedback">
+                                Please provide a description.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="FlowDirectionId">Flow Direction</label>
+                            @Html.DropDownListFor(x => x.FlowDirectionId, new SelectList(await _drainService.GetFlowDirectionAll(), "FlowDirectionId", "Name", "Select Flow Direction"), "Select Flow Direction", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="DrainTypeId">Drain Type</label>
+                            @Html.DropDownListFor(x => x.DrainTypeId, new SelectList(await _drainService.GetDrainTypeAll(), "DrainTypeId", "Name", "Select Drain Type"), "Select Drain Type", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="DrainTypeId">Drain Type</label>
+                            @Html.DropDownListFor(x => x.RoadTypeId, new SelectList(await _drainService.GetRoadTypeAll(), "RoadTypeId", "Name", "Select Road Type"), "Select Road Type", new { @class = "form-control" })
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="lat">Latitude</label>
+                                <input id="lat" name="Latitude" type="text" class="form-control" readonly required />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="long">Longitude</label>
+                                <input id="long" type="text" name="Longitude" class="form-control" readonly required />
+                            </div>
+                        </div>
+                        <button type="button" id="submitRegisterBtn" class="btn btn-primary">Register Drain</button>
+                    </form>
+                </div>
+            </div>
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
+        </div>
+    </div>
+</div>
 
-                infoWindow.setPosition(pos);
-                infoWindow.setContent('Location found.');
-                infoWindow.open(map);
-                map.setCenter(pos);
-            }, function () {
-                handleLocationError(true, infoWindow, map.getCenter());
+<!-- Modal -->
+<div class="modal fade" id="adoptRegisteredDrainModal" tabindex="-1" role="dialog" aria-labelledby="adoptRegisteredDrainModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adoptRegisteredDrainModalTitle">Would you like to adopt this drain?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <button id="noAdoptDrain" type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button id="yesAdoptDrain" type="button" class="btn btn-primary" data-drainId="">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
+    @section Scripts{
+        <script>
+        'use strict'
+        let map
+        let infoWindow;
+        initMap();
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 27.949536, lng: -82.452229 },
+                zoom: 12
             });
-        } else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
+            infoWindow = new google.maps.InfoWindow;
         }
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+        $('#submitRegisterBtn').on('click', function (event) {
+            let form = document.getElementById('registerForm');
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CreateDrain", "Drain")",
+                    data: $('#registerForm').serialize(),
+                    success: function (data, textStatus, jqXHR) {
+                        $('#yesAdoptDrain').data('drainid', data);
+                        $('#adoptRegisteredDrainModal').modal('show');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert();
+                    },
+                    dataType: 'json'
+                });
+            }
+            form.classList.add('was-validated');
+        });
+
+            $('#yesAdoptDrain').on('click', function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("AssignDrainToUser", "Drain")",
+                    data: { drainId:$(this).data('drainid') },
+                    success: function (data, textStatus, jqXHR) {
+                        window.location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert();
+                    },
+                    dataType: 'json'
+                });
+            });
+
+            $('#noAdoptDrain').on('click', function () {
+                window.location.reload();
+            });
+        $('#setLocation').on('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    $('#lat').val(pos.lat);
+                    $('#long').val(pos.lng);
+                    var marker = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: 'Drain'
+                    });
+                    var infowindow = new google.maps.InfoWindow({
+                        content: 'Drain Location.'
+                    });
+
+                    marker.addListener('click', function () {
+                        infowindow.open(map, marker);
+                    });
+
+                    marker.setMap(map);
+                    map.setCenter(pos);
+                    map.setZoom(20);
+
+                }, function () {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        });
+        </script>
     }
 
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-            'Error: The Geolocation service failed.' :
-            'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-    }
-</script>
 
 

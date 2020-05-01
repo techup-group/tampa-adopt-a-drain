@@ -57,5 +57,53 @@ namespace AdoptADrain.Areas.Manage.Controllers
             return View();
         }
 
+        #region HttpMethods
+        [HttpPost]
+        public async Task<IActionResult> CreateDrain(DrainDTO registerDrain)
+        {
+            try
+            {
+                if(String.IsNullOrEmpty(registerDrain.Latitude) || String.IsNullOrEmpty(registerDrain.Longitude))
+                {
+                    return BadRequest("Invalid Coordinate Parameters");
+                }
+                else
+                {
+                    Drain drain = _mapper.Map<Drain>(registerDrain);
+                    int drainId = await _drainService.CreateDrain(drain);
+                    return Ok(drainId);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignDrainToUser(int drainId)
+        {
+            try
+            {
+                if(drainId < 1)
+                {
+                    return BadRequest("Invalid Drain Parameter");
+                }
+                else
+                {
+                    Drain drain = await _drainService.GetDrain(drainId);
+                    drain.AdoptedUserId = User.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+                    drain.IsAdopted = true;
+                    int updatedDrainId = await _drainService.UpdateDrain(drain);
+                }
+               
+                return Ok(drainId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
     }
 }

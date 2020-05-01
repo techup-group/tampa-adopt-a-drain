@@ -45,9 +45,15 @@ namespace AdoptADrain.Services
         #endregion Create
         
         #region Get
-        public Task<Drain> GetDrain(int drainId)
+        public async Task<Drain> GetDrain(int drainId)
         {
-            throw new NotImplementedException();
+            var drains = _context.Drain
+                .Include(x => x.FlowDirection)
+                .Include(x => x.RoadType)
+                .Include(x => x.DrainType)
+                .Include(x => x.DrainStatusHistory);
+
+            return await drains.Where(x => x.DrainId == drainId).FirstOrDefaultAsync();
         }
 
         public async Task<List<DrainDTO>> GetDrainAll(DrainSearchOptions opts)
@@ -88,10 +94,22 @@ namespace AdoptADrain.Services
             return _mapper.Map<List<DrainDTO>>(drainList);
         }
 
+        public async Task<List<DrainTypeDTO>> GetDrainTypeAll()
+        {
+            var drainType = await _context.DrainType.ToListAsync();
+            return _mapper.Map<List<DrainTypeDTO>>(drainType);
+        }
+
         public async Task<List<FlowDirectionDTO>> GetFlowDirectionAll()
         {
             var flowDirection =  await _context.FlowDirection.ToListAsync();
             return _mapper.Map<List<FlowDirectionDTO>>(flowDirection);
+        }
+
+        public async Task<List<RoadTypeDTO>> GetRoadTypeAll()
+        {
+            var roadType = await _context.RoadType.ToListAsync();
+            return _mapper.Map<List<RoadTypeDTO>>(roadType);
         }
 
         #endregion Get
@@ -101,9 +119,11 @@ namespace AdoptADrain.Services
             throw new NotImplementedException();
         }
 
-        public Task<int> UpdateDrain(Drain drain)
+        public async Task<int> UpdateDrain(Drain drain)
         {
-            throw new NotImplementedException();
+            _context.Entry(drain).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return drain.DrainId;
         }
     }
 }
