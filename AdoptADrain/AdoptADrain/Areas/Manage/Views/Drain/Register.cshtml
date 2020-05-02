@@ -28,7 +28,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12 justify-content-center d-flex">
-            <a class="btn btn-primary w-25" href="javascript::;" id="setLocation">Set GPS Location</a>
+            <a class="btn btn-primary" href="javascript::;" id="setLocation">Set GPS Location</a>
         </div>
     </div>
     <div class="row mb-2">
@@ -36,7 +36,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <form id="registerForm" class="need-validation" novalidate>
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <label for="Name">Please provide a short description of the drain</label>
                             <input class="form-control" asp-for="Name" placeholder="Short Description" required />
                             <div class="invalid-feedback">
@@ -54,7 +54,7 @@
                         <div class="form-group">
                             <label for="DrainTypeId">Drain Type</label>
                             @Html.DropDownListFor(x => x.RoadTypeId, new SelectList(await _drainService.GetRoadTypeAll(), "RoadTypeId", "Name", "Select Road Type"), "Select Road Type", new { @class = "form-control" })
-                        </div>
+                        </div>*@
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label for="lat">Latitude</label>
@@ -94,10 +94,12 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
     @section Scripts{
         <script>
-        'use strict'
+            'use strict'
+
         let map
         let infoWindow;
         initMap();
+
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 27.949536, lng: -82.452229 },
@@ -105,6 +107,7 @@
             });
             infoWindow = new google.maps.InfoWindow;
         }
+
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             infoWindow.setPosition(pos);
             infoWindow.setContent(browserHasGeolocation ?
@@ -112,13 +115,13 @@
                 'Error: Your browser doesn\'t support geolocation.');
             infoWindow.open(map);
         }
+
         $('#submitRegisterBtn').on('click', function (event) {
             let form = document.getElementById('registerForm');
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("CreateDrain", "Drain")",
@@ -136,24 +139,25 @@
             form.classList.add('was-validated');
         });
 
-            $('#yesAdoptDrain').on('click', function () {
-                $.ajax({
-                    type: "POST",
-                    url: "@Url.Action("AssignDrainToUser", "Drain")",
-                    data: { drainId:$(this).data('drainid') },
-                    success: function (data, textStatus, jqXHR) {
-                        window.location.reload();
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert();
-                    },
-                    dataType: 'json'
-                });
+        $('#yesAdoptDrain').on('click', function () {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("AssignDrainToUser", "Drain")",
+                data: { drainId:$(this).data('drainid') },
+                success: function (data, textStatus, jqXHR) {
+                    window.location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert();
+                },
+                dataType: 'json'
             });
+        });
 
-            $('#noAdoptDrain').on('click', function () {
-                window.location.reload();
-            });
+        $('#noAdoptDrain').on('click', function () {
+            window.location.reload();
+        });
+
         $('#setLocation').on('click', function () {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {

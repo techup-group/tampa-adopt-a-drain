@@ -3,41 +3,144 @@
     ViewData["Title"] = "AdoptedDrains";
     Layout = "~/Areas/Manage/Views/Shared/_AdoptLayout.cshtml";
 }
-
+@using Newtonsoft.Json
+@inject IConfiguration configuration
 @model AdoptADrain.Areas.Manage.ViewModels.UserAdoptedDrainsVM
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1 class="pt-3">Adopted Drains</h1>
-                <h2 class="pt-5">Welcome @User.Identity.Name</h2>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 class="pt-3">Adopted Drains</h1>
+            <h2 class="pt-5">Welcome @User.Identity.Name</h2>
         </div>
-        <div class="row">
-            <div class="col-sm-12 pb-5">
-                @* No Drains *@
-                @if (Model.AdoptedDrains.Count == 0)
-                {
-                    <h4>Get started by adopting your first drain!</h4>
-                    <a class="btn btn-primary" asp-controller="Drain" asp-action="Adopt" asp-area="Manage">Adopt A Drain</a>
-                }
-                else
-                {
-                    @* Has Drains List the Drains *@
-                    <h3>Your adopted drains:</h3>
-                        <ul class="list-group list-group-flush">
-                        @foreach (var adoptedDrain in Model.AdoptedDrains)
-                        {
-                            <li class="list-group-item">
-                                @adoptedDrain.Name
-                            </li>
-                        }
-                        </ul>
-                }
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 pb-5">
+            @* No Drains *@
+            @if (Model.AdoptedDrains.Count == 0)
+            {
+                <h4>Get started by adopting your first drain!</h4>
+                <a class="btn btn-primary" asp-controller="Drain" asp-action="Adopt" asp-area="Manage">Adopt A Drain</a>
+            }
+            else
+            {
+                @* Has Drains List the Drains *@
+                <h3>Your adopted drains:</h3>
+
+                <div class="col-sm-12">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    @foreach (var adoptedDrain in Model.AdoptedDrains)
+                    {
+                        <li class="list-group-item">
+                            @adoptedDrain.Name
+                        </li>
+                    }
+                </ul>
+            }
         </div>
+    </div>
 
     <div class="text-center mb-1">
         <a asp-controller="Drain" asp-action="Register" asp-area="Manage">Don't see a drain? Register it!</a>
     </div>
-    </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
+<script src="https://unpkg.com/@@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+
+@section Scripts{
+    <script>
+        let map
+        let infoWindow;
+        let markerArray = [];
+        let adoptedDrains = @Html.Raw(JsonConvert.SerializeObject(Model.AdoptedDrains));
+        if (adoptedDrains && adoptedDrains.length > 0) {
+            initMap();
+        }
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'));
+            infoWindow = new google.maps.InfoWindow;
+
+            adoptedDrains.forEach(function (element) {
+                var drainCoordinates = new google.maps.LatLng(element.Latitude, element.Longitude);
+                var marker = addMarker(drainCoordinates, map, '', '/img/icons8-water-32.png', element);
+            });
+
+            var markerCluster = new MarkerClusterer(map, markerArray,
+                { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+            autoCenter();
+        }
+
+        function addMarker(location, map, mLabel, imgPath, element) {
+                var image = {
+                    url: imgPath,
+                    // This marker is 20 pixels wide by 32 pixels high.
+                    size: new google.maps.Size(32, 32),
+                    // The origin for this image is (0, 0).
+                    origin: new google.maps.Point(0, 0)
+                    // The anchor for this image is the base of the flagpole at (0, 32).
+                    // anchor: new google.maps.Point(0, 32)
+                };
+                var marker = new google.maps.Marker({
+                    position: location,
+                    //label: {
+                    //    text: mLabel,
+                    //    color: "white",
+                    //    fontFamily: "Tajawal",
+                    //    fontSize: "18px"
+                    //},
+                    animation: google.maps.Animation.DROP,
+                    map: map,
+                    icon: image
+                });
+
+                //marker.addListener('click', function () {
+                //    marker.setAnimation(google.maps.Animation.DROP);
+                //});
+
+                markerArray.push(marker);
+
+                @*google.maps.event.addListener(marker, 'click', function () {
+                    var optionalAddressLine2 = element.AddressLine2 && element.AddressLine2 != '' ? element.AddressLine2 + '<br>' : ''
+                    infowindow.setContent('<div><strong>' + element.SiteLanguage[0].Name + '</strong><br>' +
+                        element.AddressLine1 + '<br>' +
+                        optionalAddressLine2 +
+                        element.City + ', ' + element.StateProvince + " " + element.PostalCode + '<br>' +
+                        element.distance + 'mi<br>' +
+                        "<button onclick=\'saveSite()\' class=\'btn siteSelectBtn\' data-siteid=\'" + element.SiteId + "\' data-partLocation=\'" + place.geometry.location.lat() + ',' + place.geometry.location.lng() +"\'>@Model.GetContent("selectSiteBtn")</button>"
+                        + '</div>');
+                    infowindow.open(map, this);
+                });*@
+
+
+                //marker.addListener('click', function () {
+                //
+                //    if (marker.getAnimation() !== null) {
+                //        marker.setAnimation(null);
+                //    } else {
+                //        marker.setAnimation(google.maps.Animation.BOUNCE);
+                //    }
+                //});
+
+                return marker;
+        }
+
+        function autoCenter() {
+            //  Create a new viewpoint bound
+            var bounds = new google.maps.LatLngBounds();
+            //  Go through each...
+            for (var i = 0; i < markerArray.length; i++) {
+                bounds.extend(markerArray[i].position);
+            }
+            //  Fit these bounds to the map
+            map.fitBounds(bounds);
+        }
+    </script>
+}
 
