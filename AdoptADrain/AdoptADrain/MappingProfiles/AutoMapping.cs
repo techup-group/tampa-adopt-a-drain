@@ -17,6 +17,7 @@ namespace AdoptADrain.MappingProfiles
             CreateMap<FlowDirection, FlowDirectionDTO>().ReverseMap();
             CreateMap<DrainStatus, DrainStatusDTO>().ReverseMap();
             CreateMap<Drain, DrainDTO>().ReverseMap();
+            CreateMap<DrainType, DrainTypeDTO>().ReverseMap();
         }
     }
 }
