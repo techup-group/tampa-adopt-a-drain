@@ -111,8 +111,17 @@ nav {
     color: #FFF;
     text-decoration: underline;
 }
+.header {
+    background-color: #022730;
+    background-image: url(/img/hero.jpg);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #FFF;
+    margin-bottom: 30px;
+}
 .hero {
-    background-color: #FFF;
+    background-color: #022730;
     background-image: url(/img/hero.jpg);
     background-position: bottom;
     background-repeat: no-repeat;
@@ -125,7 +134,7 @@ nav {
         background-attachment: fixed;
         padding: 200px 0 180px
     }
-        .hero h1 {
+        .hero h1, .header h1 {
             font-size: 3rem;
         }
         h3, .h3 {
@@ -136,7 +145,7 @@ nav {
     .hero {
         padding: 150px 0 120px
     }
-        .hero h1 {
+        .hero h1, .header h1 {
             font-size: 2.5rem;
         }
         .hero h3 {
