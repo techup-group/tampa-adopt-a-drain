@@ -33,15 +33,33 @@
                         </div>
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    @foreach (var adoptedDrain in Model.AdoptedDrains)
-                    {
-                        <li class="list-group-item">
-                            @adoptedDrain.Name
-                            Nearest Cross Street: XYZ
-                        </li>
-                    }
-                </ul>
+                <div class="col-sm-12 table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Drain ID</th>
+                                <th scope="col">Your last drain status update</th>
+                                <th scope="col">Status Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var adoptedDrain in Model.AdoptedDrains)
+                            {
+                                <tr>
+                                    <td>
+                                        @adoptedDrain.DrainId
+                                    </td>
+                                    <td>
+                                        @(adoptedDrain.DrainStatusHistory.LastOrDefault() == null ? "No Status Updates Reported": adoptedDrain.DrainStatusHistory.Last().DrainStatus.Name )
+                                    </td>
+                                    <td>
+                                        @adoptedDrain.DrainStatusHistory.LastOrDefault()?.StatusCreateDttm.ToShortDateString()
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             }
         </div>
     </div>
@@ -52,28 +70,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="drainStatusUpdateModal" tabindex="-1" role="dialog" aria-labelledby="drainStatusUpdateModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="drainStatusUpdateModalTitle">What is the current status of the drain?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="DrainStatusId">Drain Status</label>
-                    @Html.DropDownList("DrainStatusId",new SelectList(await _drainService.GetDrainStatusAll(), "DrainStatusId", "Name", "Select Drain Status"), "Select Drain Status", new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="cancelUpdateDrain" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button id="updateDrain" type="button" class="btn btn-primary" data-drainId="">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="modal fade" id="drainStatusUpdateModal" tabindex="-1" role="dialog" aria-labelledby="drainStatusUpdateModalTitle" aria-hidden="true"></div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
 <script src="https://unpkg.com/@@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
@@ -90,7 +87,7 @@
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'));
-            
+
 
             adoptedDrains.forEach(function (element) {
                 var drainCoordinates = new google.maps.LatLng(element.Latitude, element.Longitude);
@@ -125,11 +122,13 @@
                     icon: image
                 });
 
-                markerArray.push(marker);
-            infowindow.setContent('<div id="' + element.DrainId + '">'
-                + "<button onclick=\'updateDrainStatusClick()\' class=\'btn btn-info btn-sm\' data-drainId=\'" + element.DrainId + "\'>Update Drain Status</button>"
-                + '</div>');
+            markerArray.push(marker);
+            console.log(element.DrainId);
+           
             google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent('<div id="' + element.DrainId + '">'
+                    + "<button onclick=\'updateDrainStatusClick(" + element.DrainId + " )\' class=\'btn btn-info btn-sm\' data-drainId=\'" + element.DrainId + "\'>Update Drain Status</button>"
+                    + '</div>');
                 infowindow.open(map, this);
             });
                 return marker;
@@ -146,11 +145,32 @@
             map.fitBounds(bounds);
         }
 
-        function updateDrainStatusClick() {
-            alert();
-            $('drainStatusUpdateModal').modal('show');
-            $('#updateDrain').data('drainid', $(this).data('drainid'));
+        function updateDrainStatusClick(drainId) {
+           
+            //Edit Drain Status Modal Form
+            
+                $.get({
+                    url: "@Url.Action("EditDrainStatusModalContent", "Drain")",
+                    data: { drainIdToUdpate: drainId }
+                }).done(function (response, status, xhr) {
+                    $("#drainStatusUpdateModal").html(response);
+                    $('#drainStatusUpdateModal').modal('show');
+                });
+         
         }
+
+        //Save Drain Status
+        $("#drainStatusUpdateModal").on("submit", "#drainStatusUpdateForm", function (event) {
+            event.preventDefault();
+            $("#drainStatusUpdateModal").modal("hide");
+                var formData = $(this).serialize();
+                    $.post({
+                        url: "@Url.Action("UpdateDrainStatus", "Drain")",
+                        data: formData
+                    }).done(function (response, status, xhr) {
+                        window.location.reload();
+                    });
+            });
     </script>
 }
 

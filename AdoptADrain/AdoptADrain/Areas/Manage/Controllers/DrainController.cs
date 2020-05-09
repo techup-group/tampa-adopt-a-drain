@@ -37,9 +37,9 @@ namespace AdoptADrain.Areas.Manage.Controllers
             List<DrainDTO> userDrains = await _drainService.GetDrainAll(new DrainSearchOptions { AdoptedUserId = userObjectId });
 
             //Available Drains
-            List<DrainDTO> availableDrains = await _drainService.GetDrainAll(new DrainSearchOptions { excludeAdopted = true });
+            //List<DrainDTO> availableDrains = await _drainService.GetDrainAll(new DrainSearchOptions { excludeAdopted = true });
 
-            return View(new UserAdoptedDrainsVM { AdoptedDrains = userDrains, AvailableDrains = availableDrains });
+            return View(new UserAdoptedDrainsVM { AdoptedDrains = userDrains });
         }
 
         public async Task<IActionResult> Adopt()
@@ -98,6 +98,71 @@ namespace AdoptADrain.Areas.Manage.Controllers
                 }
                
                 return Ok(drainId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateDrainStatus(DrainStatusHistory drainStatus)
+        {
+            try
+            {
+                if (drainStatus.DrainId < 1 || drainStatus.DrainStatusId < 1)
+                {
+                    return BadRequest("Invalid Drain Parameter");
+                }
+                else
+                {
+                    Drain drain = await _drainService.GetDrain(drainStatus.DrainId);
+                    if(drain != null)
+                    {
+                        DrainStatusHistory statusUpdate = new DrainStatusHistory
+                        {
+                            DrainStatusId = drainStatus.DrainStatusId,
+                            DrainId = drainStatus.DrainId,
+                            StatusChangeUser = User.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value,
+                            StatusCreateDttm = DateTime.Now
+                        };
+                        await _drainService.CreateDrainStatusHistory(statusUpdate).ConfigureAwait(true);
+                    }
+                    else
+                    {
+                        return BadRequest("Could not locate drain.");
+                    }
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditDrainStatusModalContent(int drainIdToUdpate)
+        {
+            try
+            {
+                if (drainIdToUdpate < 1)
+                {
+                    return BadRequest("Invalid Drain Parameter");
+                }
+                else
+                {
+                    Drain drain = await _drainService.GetDrain(drainIdToUdpate);
+                    if (drain != null)
+                    {
+                        return PartialView("_EditDrainStatus", new DrainStatusHistoryDTO { DrainId = drainIdToUdpate });
+                    }
+                    else
+                    {
+                        return BadRequest("Could not locate drain.");
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace AdoptADrain.Services
@@ -62,31 +61,32 @@ namespace AdoptADrain.Services
                 .Include(x => x.FlowDirection)
                 .Include(x => x.RoadType)
                 .Include(x => x.DrainType)
-                .Include(x => x.DrainStatusHistory);
+                .Include(x => x.DrainStatusHistory).ThenInclude(p=>p.DrainStatus)
+                .Select(x =>x);
 
             if (opts.FlowDirectionId > 0)
             {
-                drains.Where(x => x.FlowDirectionId == opts.FlowDirectionId);
+               drains = drains.Where(x => x.FlowDirectionId == opts.FlowDirectionId);
             }
 
             if(opts.DrainTypeId > 0)
             {
-                drains.Where(x => x.DrainTypeId == opts.DrainTypeId);
+                drains = drains.Where(x => x.DrainTypeId == opts.DrainTypeId);
             }
 
             if (opts.RoadTypeId > 0)
             {
-                drains.Where(x => x.RoadTypeId == opts.RoadTypeId);
+                drains = drains.Where(x => x.RoadTypeId == opts.RoadTypeId);
             }
 
             if (opts.excludeAdopted)
             {
-                drains.Where(x => !x.IsAdopted);
+                drains = drains.Where(x => !x.IsAdopted);
             }
 
             if (!String.IsNullOrEmpty(opts.AdoptedUserId))
             {
-                drains.Where(x => x.AdoptedUserId == opts.AdoptedUserId);
+                drains = drains.Where(x => x.AdoptedUserId == opts.AdoptedUserId);
             }
 
             List<Drain> drainList = await drains.ToListAsync();

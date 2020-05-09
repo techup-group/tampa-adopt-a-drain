@@ -18,9 +18,9 @@ namespace AdoptADrain.Areas.Manage.Models
         public string Latitude { get; set; }
         public string Longitude { get; set; }
 
-        public virtual DrainTypeDTO DrainType { get; set; }
-        public virtual FlowDirectionDTO FlowDirection { get; set; }
-        public virtual RoadTypeDTO RoadType { get; set; }
-        public virtual List<DrainStatusHistoryDTO> DrainStatusHistory { get; set; }
+        public  DrainTypeDTO DrainType { get; set; }
+        public  FlowDirectionDTO FlowDirection { get; set; }
+        public  RoadTypeDTO RoadType { get; set; }
+        public  List<DrainStatusHistoryDTO> DrainStatusHistory { get; set; }
     }
 }

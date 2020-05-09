@@ -9,6 +9,5 @@ namespace AdoptADrain.Areas.Manage.ViewModels
     public class UserAdoptedDrainsVM
     {
         public List<DrainDTO> AdoptedDrains { get; set; }
-        public List<DrainDTO> AvailableDrains { get; set; }
     }
 }

@@ -39,8 +39,10 @@ namespace AdoptADrain
             .AddCookie();
 
             services.AddAutoMapper(typeof(Startup));
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
-           
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
+            
+
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {

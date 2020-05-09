@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@inject AdoptADrain.Services.IDrainService _drainService
+@model AdoptADrain.Areas.Manage.Models.DrainStatusHistoryDTO
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="drainStatusUpdateModalTitle">What is the current status of the drain?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="drainStatusUpdateForm" class="" novalidate>
+                <div class="form-group">
+                    <label for="DrainStatusId">Drain Status</label>
+                    @Html.DropDownListFor(x=>x.DrainStatusId, new SelectList(await _drainService.GetDrainStatusAll(), "DrainStatusId", "Name",null), "Select Drain Status", new { @class = "form-control", @required = true })
+                    <div class="invalid-feedback">
+                        <p>Drain status required.</p>
+                    </div>
+                </div>
+                <input type="hidden" asp-for="DrainId" value="@Model.DrainId" required />
+                <button id="updateDrain" type="button" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        'use strict';
+        $('#updateDrain').on('click', function (event) {
+            $('#drainStatusUpdateForm').addClass('was-validated');
+            if ($('#drainStatusUpdateForm')[0].checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                $('#drainStatusUpdateForm').submit();
+            }
+        });
+    })();
+</script>
