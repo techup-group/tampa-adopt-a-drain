@@ -5,7 +5,11 @@
 }
 @using Newtonsoft.Json
 @inject IConfiguration configuration
+@inject AdoptADrain.Services.IDrainService _drainService
 @model AdoptADrain.Areas.Manage.ViewModels.UserAdoptedDrainsVM
+@{ 
+    int DrainStautsId = 0;
+}
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
@@ -25,7 +29,6 @@
             {
                 @* Has Drains List the Drains *@
                 <h3>Your adopted drains:</h3>
-
                 <div class="col-sm-12">
                     <div class="card shadow">
                         <div class="card-body">
@@ -33,7 +36,6 @@
                         </div>
                     </div>
                 </div>
-
                 <ul class="list-group list-group-flush">
                     @foreach (var adoptedDrain in Model.AdoptedDrains)
                     {
@@ -50,22 +52,47 @@
         <a asp-controller="Drain" asp-action="Register" asp-area="Manage">Don't see a drain? Register it!</a>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="drainStatusUpdateModal" tabindex="-1" role="dialog" aria-labelledby="drainStatusUpdateModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="drainStatusUpdateModalTitle">What is the current status of the drain?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="DrainStatusId">Drain Status</label>
+                    @Html.DropDownList("DrainStatusId",new SelectList(await _drainService.GetDrainStatusAll(), "DrainStatusId", "Name", "Select Drain Status"), "Select Drain Status", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelUpdateDrain" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id="updateDrain" type="button" class="btn btn-primary" data-drainId="">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
 <script src="https://unpkg.com/@@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
 
 @section Scripts{
     <script>
-        let map
-        let infoWindow;
-        let markerArray = [];
-        let adoptedDrains = @Html.Raw(JsonConvert.SerializeObject(Model.AdoptedDrains));
+        var map
+        var markerArray = [];
+        var adoptedDrains = @Html.Raw(JsonConvert.SerializeObject(Model.AdoptedDrains));
+        var infowindow = new google.maps.InfoWindow();
         if (adoptedDrains && adoptedDrains.length > 0) {
             initMap();
         }
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'));
-            infoWindow = new google.maps.InfoWindow;
+            
 
             adoptedDrains.forEach(function (element) {
                 var drainCoordinates = new google.maps.LatLng(element.Latitude, element.Longitude);
@@ -100,34 +127,13 @@
                     icon: image
                 });
 
-                //marker.addListener('click', function () {
-                //    marker.setAnimation(google.maps.Animation.DROP);
-                //});
-
                 markerArray.push(marker);
-
-                @*google.maps.event.addListener(marker, 'click', function () {
-                    var optionalAddressLine2 = element.AddressLine2 && element.AddressLine2 != '' ? element.AddressLine2 + '<br>' : ''
-                    infowindow.setContent('<div><strong>' + element.SiteLanguage[0].Name + '</strong><br>' +
-                        element.AddressLine1 + '<br>' +
-                        optionalAddressLine2 +
-                        element.City + ', ' + element.StateProvince + " " + element.PostalCode + '<br>' +
-                        element.distance + 'mi<br>' +
-                        "<button onclick=\'saveSite()\' class=\'btn siteSelectBtn\' data-siteid=\'" + element.SiteId + "\' data-partLocation=\'" + place.geometry.location.lat() + ',' + place.geometry.location.lng() +"\'>@Model.GetContent("selectSiteBtn")</button>"
-                        + '</div>');
-                    infowindow.open(map, this);
-                });*@
-
-
-                //marker.addListener('click', function () {
-                //
-                //    if (marker.getAnimation() !== null) {
-                //        marker.setAnimation(null);
-                //    } else {
-                //        marker.setAnimation(google.maps.Animation.BOUNCE);
-                //    }
-                //});
-
+            infowindow.setContent('<div id="' + element.DrainId + '">'
+                + "<button onclick=\'updateDrainStatusClick()\' class=\'btn btn-info btn-sm\' data-drainId=\'" + element.DrainId + "\'>Update Drain Status</button>"
+                + '</div>');
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.open(map, this);
+            });
                 return marker;
         }
 
@@ -140,6 +146,12 @@
             }
             //  Fit these bounds to the map
             map.fitBounds(bounds);
+        }
+
+        function updateDrainStatusClick() {
+            alert();
+            $('drainStatusUpdateModal').modal('show');
+            $('#updateDrain').data('drainid', $(this).data('drainid'));
         }
     </script>
 }

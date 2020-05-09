@@ -75,5 +75,11 @@ namespace AdoptADrain.Services
         /// <returns>Road Type List</returns>
         Task<List<RoadTypeDTO>> GetRoadTypeAll();
 
+        /// <summary>
+        /// Get All Drain Statuses
+        /// </summary>
+        /// <returns>Drain Status List</returns>
+        Task<List<DrainStatusDTO>> GetDrainStatusAll();
+
     }
 }

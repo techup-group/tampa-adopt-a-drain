@@ -112,6 +112,12 @@ namespace AdoptADrain.Services
             return _mapper.Map<List<RoadTypeDTO>>(roadType);
         }
 
+        public async Task<List<DrainStatusDTO>> GetDrainStatusAll()
+        {
+            var drainStatus = await _context.DrainStatus.ToListAsync();
+            return _mapper.Map<List<DrainStatusDTO>>(drainStatus);
+        }
+
         #endregion Get
 
         public Task<int> RemoveDrain(int drainId)
