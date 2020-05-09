@@ -7,9 +7,6 @@
 @inject IConfiguration configuration
 @inject AdoptADrain.Services.IDrainService _drainService
 @model AdoptADrain.Areas.Manage.ViewModels.UserAdoptedDrainsVM
-@{ 
-    int DrainStautsId = 0;
-}
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
@@ -41,6 +38,7 @@
                     {
                         <li class="list-group-item">
                             @adoptedDrain.Name
+                            Nearest Cross Street: XYZ
                         </li>
                     }
                 </ul>
