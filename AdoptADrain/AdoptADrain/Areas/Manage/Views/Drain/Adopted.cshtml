@@ -7,11 +7,19 @@
 @inject IConfiguration configuration
 @inject AdoptADrain.Services.IDrainService _drainService
 @model AdoptADrain.Areas.Manage.ViewModels.UserAdoptedDrainsVM
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="mb-0">Adopted Drains</h1>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h1 class="pt-3">Adopted Drains</h1>
-            <h2 class="pt-5">Welcome @User.Identity.Name</h2>
+            <h2>Welcome @User.Identity.Name</h2>
         </div>
     </div>
     <div class="row">
@@ -50,7 +58,7 @@
                                         @adoptedDrain.DrainId
                                     </td>
                                     <td>
-                                        @(adoptedDrain.DrainStatusHistory.LastOrDefault() == null ? "No Status Updates Reported": adoptedDrain.DrainStatusHistory.Last().DrainStatus.Name )
+                                        @(adoptedDrain.DrainStatusHistory.LastOrDefault() == null ? "No Status Updates Reported" : adoptedDrain.DrainStatusHistory.Last().DrainStatus.Name)
                                     </td>
                                     <td>
                                         @adoptedDrain.DrainStatusHistory.LastOrDefault()?.StatusCreateDttm.ToShortDateString()
@@ -124,7 +132,7 @@
 
             markerArray.push(marker);
             console.log(element.DrainId);
-           
+
             google.maps.event.addListener(marker, 'click', function () {
                 infowindow.setContent('<div id="' + element.DrainId + '">'
                     + "<button onclick=\'updateDrainStatusClick(" + element.DrainId + " )\' class=\'btn btn-info btn-sm\' data-drainId=\'" + element.DrainId + "\'>Update Drain Status</button>"
@@ -146,9 +154,9 @@
         }
 
         function updateDrainStatusClick(drainId) {
-           
+
             //Edit Drain Status Modal Form
-            
+
                 $.get({
                     url: "@Url.Action("EditDrainStatusModalContent", "Drain")",
                     data: { drainIdToUdpate: drainId }
@@ -156,7 +164,7 @@
                     $("#drainStatusUpdateModal").html(response);
                     $('#drainStatusUpdateModal').modal('show');
                 });
-         
+
         }
 
         //Save Drain Status
