@@ -4,7 +4,8 @@
     Layout = "~/Areas/Manage/Views/Shared/_AdoptLayout.cshtml";
 }
 @inject IConfiguration configuration
-
+@using Newtonsoft.Json
+@model AdoptADrain.Areas.Manage.ViewModels.AvailableDrainsVM
 <style>
     /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
@@ -24,28 +25,231 @@
 </div>
 <div class="container">
     <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group ">
+                <label for="userAddress">Search for your address to retrieve nearest drain locations</label>
+                <input id="userAddress" class="form-control" type="text" placeholder="Street Address" />
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="distanceOption">Select distance from drain</label>
+                <select id="distanceOption" class="form-control d-inline">
+                    <option value="0.2" selected>0.2 miles</option>
+                    <option value="0.5"> 0.5 miles</option>
+                    <option value="1">1 miles</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="noDrainMessage" class="row mt-2 d-none">
         <div class="col-sm-12">
-            <div id="map"></div>
+            <div class="alert alert-info rounded">
+                Sorry, no available drains found within the distance range. <a asp-controller="Drain" asp-area="Manage" asp-action="Register">Click here to register a new drain.</a>
+            </div>
+        </div>
+    </div>
+    <div id="noPlaceMessage" class="row mt-2 d-none">
+        <div class="col-sm-12">
+            <div class="alert alert-info rounded">
+                Please select from the autoccomplete options. 
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
-            
+        <div class="col-sm-12 mb-2">
+            <div id="map">
+
+            </div>
         </div>
     </div>
 </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
-<script>
-    'use strict'
-    let map
-    let infoWindow;
-    initMap();
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 27.949536, lng: -82.452229 },
-            zoom: 6
-        });
-        infoWindow = new google.maps.InfoWindow;
+<script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]&libraries=places,geometry"></script>
+<script src="https://unpkg.com/@@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+@section Scripts{
+    <script>
+        'use strict'
 
-    }
-</script>
+        //TODO
+        /**
+         * Having to initialize the map everytime distance is changed or a place is changed doesnt sound an ideal startegy
+         * Refactoring the workflow of displaying makers is a pending task
+         * Markers are saved to google maps array and dont see to clear unless map is re-initilized
+         * */
+        var map;
+
+        var place;
+
+        var input = document.getElementById('userAddress');
+
+        var marker = new google.maps.Marker({});
+
+        var tampaCoord = { lat: 27.950575, lng: -82.457176 };
+
+        var markerArray = [];
+
+        var model = @Html.Raw(JsonConvert.SerializeObject(Model.AvailableDrains));
+
+        //Autocomplete Options
+        var options = {
+            types: ['address'],
+            componentRestrictions: { country: 'us' },
+            fields: ['geometry', 'name']
+        };
+
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        var infowindow = new google.maps.InfoWindow();
+
+        initMap(tampaCoord);
+
+        function initMap(latLng) {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: latLng,
+                zoom: 10
+            });
+        }
+
+        google.maps.event.trigger(input, 'keydown', { keyCode: 13 })
+
+        autocomplete.addListener('place_changed', function () {
+            setMapOnAll(null);
+            markerArray = [];
+            place = autocomplete.getPlace();
+            if (!place.geometry) {
+                // User entered the name of a Place that was not suggested and
+                // pressed the Enter key, or the Place Details request failed.
+                $('#noPlaceMessage').removeClass('d-none');
+                place = '';
+            } else {
+                initMap(place.geometry.location);
+                map.fitBounds(place.geometry.viewport);
+                map.setZoom(12);
+                var placeMarker = new google.maps.Marker({
+                    position: place.geometry.location,
+                    map: map
+                });
+                markerArray.push(placeMarker);
+                model.forEach(function (element) {
+                    var drainLocation = new google.maps.LatLng(element.Latitude, element.Longitude);
+                    var distance = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, drainLocation);
+                    var distanceInMiles = (distance * 0.00062137).toFixed(2);//convert to miles
+                    if (distanceInMiles <= Number($('#distanceOption option:selected').val())) {
+                        var drainMarker = addMarker(drainLocation, map, element);
+                    }
+                });
+                clusterMarkers();
+                autoCenter();
+                //setMapOnAll(map);
+            }//End of valid place
+        });
+
+        $('#distanceOption').on('change', function () {
+            setMapOnAll(null);
+            markerArray = [];
+            if (place) {
+                initMap(place.geometry.location);
+
+                var placeMarker = new google.maps.Marker({
+                    position: place.geometry.location,
+                    map: map
+                });
+                markerArray.push(placeMarker);
+                model.forEach(function (element) {
+                    var drainLocation = new google.maps.LatLng(element.Latitude, element.Longitude);
+                    var distance = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, drainLocation);
+                    var distanceInMiles = (distance * 0.00062137).toFixed(2);//convert to miles
+                    if (distanceInMiles <= Number($('#distanceOption option:selected').val())) {
+                        var drainMarker = addMarker(drainLocation, map, element);
+                    }
+                });
+                clusterMarkers();
+                autoCenter();
+            } else {
+                window.alert('Missing Address');
+            }
+        });
+
+        function addMarker(location, map, element) {
+            var image = {
+                url: '/img/icons8-water-32.png',
+                // This marker is 20 pixels wide by 32 pixels high.
+                //size: new google.maps.Size(10, 22),
+                // The origin for this image is (0, 0).
+                origin: new google.maps.Point(0, 0)
+                // The anchor for this image is the base of the flagpole at (0, 32).
+                // anchor: new google.maps.Point(0, 32)
+            };
+            var drainMarker = new google.maps.Marker({
+                position: location,
+                //label: {
+                //    text: element.objectid.toString(),
+                //    color: "black",
+                //    fontFamily: "Nunito, sans-serif",
+                //    fontSize: "20px"
+                //},
+                animation: google.maps.Animation.DROP,
+                map: map,
+                icon: image
+            });
+            markerArray.push(drainMarker);
+            google.maps.event.addListener(drainMarker, 'click', function () {
+                infowindow.setContent('<div id="' + element.DrainId + '">'
+                    + "<button onclick=\'adoptDrainClick(" + element.DrainId + " )\' class=\'btn btn-info btn-sm\' data-drainId=\'" + element.DrainId + "\'>Adopt Drain</button>"
+                    + '</div>');
+                infowindow.open(map, this);
+            });
+            return drainMarker;
+        }
+
+        function autoCenter() {
+            //  Create a new viewpoint bound
+            var bounds = new google.maps.LatLngBounds();
+            //  Go through each...
+            for (var i = 0; i < markerArray.length; i++) {
+                bounds.extend(markerArray[i].position);
+            }
+            //  Fit these bounds to the map
+            map.fitBounds(bounds);
+        }
+
+        function resetMap() {
+            $('#noDrainMessage').addClass('d-none');
+            $('#noPlaceMessage').addClass('d-none');
+            clearMakers();
+            markerArray = [];
+        }
+
+        function clearMakers() {
+            setMapOnAll(null);
+        }
+
+        function setMapOnAll(map) {
+            for (var i = 0; i < markerArray.length; i++) {
+                markerArray[i].setMap(map);
+            }
+        }
+
+        function clusterMarkers() {
+            // Add a marker clusterer to manage the markers.
+            var markerCluster = new MarkerClusterer(map, markerArray,
+                { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+        }
+
+        function adoptDrainClick(drainId) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("AssignDrainToUser", "Drain")",
+                data: { drainId: drainId },
+                success: function (data, textStatus, jqXHR) {
+                    window.location.href = "@Url.Action("Adopted", "Drain",null,"https")"
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    //TODO Handle Error
+                },
+                dataType: 'json'
+            });
+        }
+
+    </script>
+}

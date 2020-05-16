@@ -44,7 +44,10 @@ namespace AdoptADrain.Areas.Manage.Controllers
 
         public async Task<IActionResult> Adopt()
         {
-            return View();
+            //Available Drains
+            List<DrainDTO> availableDrains = await _drainService.GetDrainAll(new DrainSearchOptions { excludeAdopted = true });
+
+            return View(new AvailableDrainsVM { AvailableDrains = availableDrains });
         }
 
         public async Task<IActionResult> Register()

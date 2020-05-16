@@ -57,6 +57,9 @@ namespace AdoptADrain.Services
 
         public async Task<List<DrainDTO>> GetDrainAll(DrainSearchOptions opts)
         {
+            if (opts == null)
+                opts = new DrainSearchOptions();
+
             var drains = _context.Drain
                 .Include(x => x.FlowDirection)
                 .Include(x => x.RoadType)

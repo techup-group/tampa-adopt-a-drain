@@ -41,7 +41,7 @@ namespace AdoptADrain.Services
         /// Get All Drains
         /// </summary>
         /// <returns>Drain List</returns>
-        Task<List<DrainDTO>> GetDrainAll(DrainSearchOptions opts);
+        Task<List<DrainDTO>> GetDrainAll(DrainSearchOptions opts = null);
 
         /// <summary>
         /// Get Drain
