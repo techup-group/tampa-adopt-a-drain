@@ -99,7 +99,7 @@
 
             adoptedDrains.forEach(function (element) {
                 var drainCoordinates = new google.maps.LatLng(element.Latitude, element.Longitude);
-                var marker = addMarker(drainCoordinates, map, '', '/img/icons8-water-32.png', element);
+                var marker = addMarker(drainCoordinates, map, '', '/img/drain-icon.png', element);
             });
 
             var markerCluster = new MarkerClusterer(map, markerArray,
@@ -135,7 +135,7 @@
 
             google.maps.event.addListener(marker, 'click', function () {
                 infowindow.setContent('<div id="' + element.DrainId + '">'
-                    + "<button onclick=\'updateDrainStatusClick(" + element.DrainId + " )\' class=\'btn btn-info btn-sm\' data-drainId=\'" + element.DrainId + "\'>Update Drain Status</button>"
+                    + "<button onclick=\'updateDrainStatusClick(" + element.DrainId + " )\' class=\'btn btn-info btn-sm mr-3\' data-drainId=\'" + element.DrainId + "\'>Update Drain Status</button>"
                     + '</div>');
                 infowindow.open(map, this);
             });

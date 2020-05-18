@@ -25,13 +25,7 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group ">
-                <label for="userAddress">Search for your address to retrieve nearest drain locations</label>
-                <input id="userAddress" class="form-control" type="text" placeholder="Street Address" />
-            </div>
-        </div>
-        <div class="col-sm-6">
+        <div class="col-sm-3">
             <div class="form-group">
                 <label for="distanceOption">Select distance from drain</label>
                 <select id="distanceOption" class="form-control d-inline">
@@ -39,6 +33,12 @@
                     <option value="0.5"> 0.5 miles</option>
                     <option value="1">1 miles</option>
                 </select>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="form-group ">
+                <label for="userAddress">Search for your address to retrieve nearest drain locations</label>
+                <input id="userAddress" class="form-control" type="text" placeholder="Street Address" />
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
     <div id="noPlaceMessage" class="row mt-2 d-none">
         <div class="col-sm-12">
             <div class="alert alert-info rounded">
-                Please select from the autoccomplete options. 
+                Please select from the autocomplete options. 
             </div>
         </div>
     </div>
@@ -166,13 +166,14 @@
                 clusterMarkers();
                 autoCenter();
             } else {
-                window.alert('Missing Address');
+                // user should be able to set distance prior to adding an address
+                //window.alert('Missing Address');
             }
         });
 
         function addMarker(location, map, element) {
             var image = {
-                url: '/img/icons8-water-32.png',
+                url: '/img/drain-icon.png',
                 // This marker is 20 pixels wide by 32 pixels high.
                 //size: new google.maps.Size(10, 22),
                 // The origin for this image is (0, 0).
@@ -195,7 +196,7 @@
             markerArray.push(drainMarker);
             google.maps.event.addListener(drainMarker, 'click', function () {
                 infowindow.setContent('<div id="' + element.DrainId + '">'
-                    + "<button onclick=\'adoptDrainClick(" + element.DrainId + " )\' class=\'btn btn-info btn-sm\' data-drainId=\'" + element.DrainId + "\'>Adopt Drain</button>"
+                    + "<button onclick=\'adoptDrainClick(" + element.DrainId + " )\' class=\'btn btn-info btn-sm mr-3\' data-drainId=\'" + element.DrainId + "\'>Adopt Drain</button>"
                     + '</div>');
                 infowindow.open(map, this);
             });

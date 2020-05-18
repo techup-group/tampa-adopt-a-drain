@@ -61,12 +61,15 @@ li {
 }
 
 .btn {
+    background-color: #217FD3;
+    border-radius: 24px;
+    border: 0;
+    padding: 6px 16px;
     font-size: 1.15rem;
+}
+.hero.btn {
     font-weight: 500;
     padding: 12px 28px;
-    border-radius: 24px;
-    background-color: #217FD3;
-    border: 0;
 }
     .btn:hover {
         background-color: #1672D3;
@@ -119,6 +122,7 @@ nav {
     background-size: cover;
     color: #FFF;
     margin-bottom: 30px;
+    padding: 12px 0;
 }
 .hero {
     background-color: #022730;
@@ -474,11 +478,15 @@ input {
 }
 
 /***Adopt AREA****/
-@media (min-width: 501px) {
-
+.gm-ui-hover-effect img {
+    height: 24px !important;
+    width: 24px !important;
+    margin: 8px -2px !important;
+}
+/*@media (min-width: 501px) {
     .adoptAreaContent {
         padding-top: 53px;
     }
-}
+}*/
 
 
