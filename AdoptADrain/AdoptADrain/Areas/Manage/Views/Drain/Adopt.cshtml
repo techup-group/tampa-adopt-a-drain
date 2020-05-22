@@ -52,17 +52,41 @@
     <div id="noPlaceMessage" class="row mt-2 d-none">
         <div class="col-sm-12">
             <div class="alert alert-info rounded">
-                Please select from the autocomplete options. 
+                Please select from the autocomplete options.
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 mb-2">
+        <div class="col-sm-12">
             <div id="map">
 
             </div>
         </div>
     </div>
+
+
+    <div id="availableDrains" class="row mt-0 d-none">
+        <div class="col-sm-12 table-responsive">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Drain ID</th>
+                        <th scope="col">Distance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]&libraries=places,geometry"></script>
 <script src="https://unpkg.com/@@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
@@ -193,6 +217,21 @@
                 map: map,
                 icon: image
             });
+
+
+            // Show table with list of drains
+            // needs to replace drainMarker.position with the actual distance (maybe in feet?) to the listed address
+            // also needs to be able to focus the map
+            // may end up moving this table to a sidebar
+            $('#availableDrains').removeClass('d-none');
+            function addDrainToTable() {
+                var addRow;
+                addRow = "<tr><td><a href='#'>" + element.DrainId + "</a></td><td><a href='#'>" + drainMarker.position + "</td></a></tr>";
+                $('#availableDrains table tbody').append(addRow);
+            }
+            addDrainToTable();
+
+                       
             markerArray.push(drainMarker);
             google.maps.event.addListener(drainMarker, 'click', function () {
                 infowindow.setContent('<div id="' + element.DrainId + '">'
@@ -217,6 +256,8 @@
         function resetMap() {
             $('#noDrainMessage').addClass('d-none');
             $('#noPlaceMessage').addClass('d-none');
+            $('#availableDrains').addClass('d-none');
+            $('#availableDrains table tbody').empty();
             clearMakers();
             markerArray = [];
         }

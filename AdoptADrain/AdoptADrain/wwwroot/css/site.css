@@ -483,10 +483,27 @@ input {
     width: 24px !important;
     margin: 8px -2px !important;
 }
+#availableDrains table tbody a {
+    display: block;
+}
+#availableDrains table tbody tr:hover {
+    cursor: pointer;
+    background-color: #e8e8e8;
+}
+#availableDrains table tbody tr:hover a {
+    text-decoration: none;
+    color: initial;
+}
 /*@media (min-width: 501px) {
     .adoptAreaContent {
         padding-top: 53px;
     }
 }*/
+
+/*
+    Wiregrass Boulevard, Wesley Chapel, FL, USA
+    Grand Oaks Blvd, Land O Lakes, FL, USA
+*/
+
 
 
