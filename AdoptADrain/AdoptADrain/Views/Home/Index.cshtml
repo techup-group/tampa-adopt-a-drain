@@ -1,8 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using AdoptADrain.Models
+@using Newtonsoft.Json
 @inject IConfiguration configuration
-
+@model HomeViewModel
 <div class="fullWidthContainer hero">
     <div class="container">
         <!-- Heading Row -->
@@ -10,7 +12,7 @@
             <div class="col-lg-12 text-center ">
                 <h1 class="mb-0">Protect Tampa's Water</h1>
                 <h3 class="mb-4">Help keep our water pollution-free!</h3>
-                <a class="btn btn-primary" asp-action="AdoptADrain" asp-controller="Home" asp-area="">Adopt A Drain</a>
+                <a class="btn btn-primary" asp-action="Adopt" asp-controller="Drain" asp-area="Manage">Adopt A Drain</a>
             </div>
         </div>
         <!-- /.row -->
@@ -115,14 +117,73 @@
     </div>
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
+<script src="https://unpkg.com/@@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
 <script>
     'use strict'
     var map, infoWindow;
+    var marker = new google.maps.Marker({});
+    var markerArray = [];
+    var model = @Html.Raw(JsonConvert.SerializeObject(Model.Drains));
+
     initMap();
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: 27.949536, lng: -82.452229 },
             zoom: 12
         });
+
+        model.forEach(function (element) {
+            var drainLocation = new google.maps.LatLng(element.Latitude, element.Longitude);
+            var drainMarker = addMarker(drainLocation, map, element);
+            
+        });
+
+        clusterMarkers();
+        autoCenter();
+    }
+
+    function autoCenter() {
+        //  Create a new viewpoint bound
+        var bounds = new google.maps.LatLngBounds();
+        //  Go through each...
+        for (var i = 0; i < markerArray.length; i++) {
+            bounds.extend(markerArray[i].position);
+        }
+        //  Fit these bounds to the map
+        map.fitBounds(bounds);
+    }
+
+    function clusterMarkers() {
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markerArray,
+            { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    }
+
+    function addMarker(location, map, element) {
+        var image = {
+            url: '/img/drain-icon.png',
+            // This marker is 20 pixels wide by 32 pixels high.
+            //size: new google.maps.Size(10, 22),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0)
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            // anchor: new google.maps.Point(0, 32)
+        };
+        var drainMarker = new google.maps.Marker({
+            position: location,
+            //label: {
+            //    text: element.objectid.toString(),
+            //    color: "black",
+            //    fontFamily: "Nunito, sans-serif",
+            //    fontSize: "20px"
+            //},
+            animation: google.maps.Animation.DROP,
+            map: map,
+            icon: image
+        });
+
+        markerArray.push(drainMarker);
+
+        return drainMarker;
     }
 </script>
