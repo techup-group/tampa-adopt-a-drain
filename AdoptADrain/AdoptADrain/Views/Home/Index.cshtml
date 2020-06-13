@@ -132,14 +132,17 @@
             zoom: 12
         });
 
-        model.forEach(function (element) {
-            var drainLocation = new google.maps.LatLng(element.Latitude, element.Longitude);
-            var drainMarker = addMarker(drainLocation, map, element);
-            
-        });
+        if (model.length > 0) {
+            model.forEach(function (element) {
+                var drainLocation = new google.maps.LatLng(element.Latitude, element.Longitude);
+                var drainMarker = addMarker(drainLocation, map, element);
 
-        clusterMarkers();
-        autoCenter();
+            });
+
+            clusterMarkers();
+            autoCenter();
+        }
+       
     }
 
     function autoCenter() {
