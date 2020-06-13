@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewData["Title"] = "AdoptedDrains";
+    Layout = "~/Areas/Manage/Views/Shared/_AdoptLayout.cshtml";
+}
+@using Newtonsoft.Json
+@inject IConfiguration configuration
+@inject AdoptADrain.Services.IDrainService _drainService
+@model AdoptADrain.Areas.Manage.ViewModels.UserAdoptedDrainsVM
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="mb-0">Adopted Drains</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Welcome @User.Identity.Name</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 pb-5">
+            @* No Drains *@
+            @if (Model.AdoptedDrains.Count == 0)
+            {
+                <h4>Get started by adopting your first drain!</h4>
+                <a class="btn btn-primary" asp-controller="Drain" asp-action="Adopt" asp-area="Manage">Adopt A Drain</a>
+            }
+            else
+            {
+                @* Has Drains List the Drains *@
+                <h3>Your adopted drains:</h3>
+                <div class="col-sm-12">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Drain ID</th>
+                                <th scope="col">Your last drain status update</th>
+                                <th scope="col">Status Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var adoptedDrain in Model.AdoptedDrains)
+                            {
+                                <tr>
+                                    <td>
+                                        @adoptedDrain.DrainId
+                                    </td>
+                                    <td>
+                                        @(adoptedDrain.DrainStatusHistory.LastOrDefault() == null ? "No Status Updates Reported" : adoptedDrain.DrainStatusHistory.Last().DrainStatus.Name)
+                                    </td>
+                                    <td>
+                                        @adoptedDrain.DrainStatusHistory.LastOrDefault()?.StatusCreateDttm.ToShortDateString()
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="text-center mb-1">
+        <a asp-controller="Drain" asp-action="Register" asp-area="Manage">Don't see a drain? Register it!</a>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="drainStatusUpdateModal" tabindex="-1" role="dialog" aria-labelledby="drainStatusUpdateModalTitle" aria-hidden="true"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=@configuration["GoogleMaps:MapsJSApi"]"></script>
+<script src="https://unpkg.com/@@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+
+@section Scripts{
+    <script>
+        var map
+        var markerArray = [];
+        var adoptedDrains = @Html.Raw(JsonConvert.SerializeObject(Model.AdoptedDrains));
+        var infowindow = new google.maps.InfoWindow();
+        if (adoptedDrains && adoptedDrains.length > 0) {
+            initMap();
+        }
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'));
+
+
+            adoptedDrains.forEach(function (element) {
+                var drainCoordinates = new google.maps.LatLng(element.Latitude, element.Longitude);
+                var marker = addMarker(drainCoordinates, map, '', '/img/drain-icon.png', element);
+            });
+
+            var markerCluster = new MarkerClusterer(map, markerArray,
+                { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+            autoCenter();
+        }
+
+        function addMarker(location, map, mLabel, imgPath, element) {
+                var image = {
+                    url: imgPath,
+                    // This marker is 20 pixels wide by 32 pixels high.
+                    size: new google.maps.Size(32, 32),
+                    // The origin for this image is (0, 0).
+                    origin: new google.maps.Point(0, 0)
+                    // The anchor for this image is the base of the flagpole at (0, 32).
+                    // anchor: new google.maps.Point(0, 32)
+                };
+                var marker = new google.maps.Marker({
+                    position: location,
+                    //label: {
+                    //    text: mLabel,
+                    //    color: "white",
+                    //    fontFamily: "Tajawal",
+                    //    fontSize: "18px"
+                    //},
+                    animation: google.maps.Animation.DROP,
+                    map: map,
+                    icon: image
+                });
+
+            markerArray.push(marker);
+            console.log(element.DrainId);
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent('<div id="' + element.DrainId + '">'
+                    + "<button onclick=\'updateDrainStatusClick(" + element.DrainId + " )\' class=\'btn btn-info btn-sm mr-3\' data-drainId=\'" + element.DrainId + "\'>Update Drain Status</button>"
+                    + '</div>');
+                infowindow.open(map, this);
+            });
+                return marker;
+        }
+
+        function autoCenter() {
+            //  Create a new viewpoint bound
+            var bounds = new google.maps.LatLngBounds();
+            //  Go through each...
+            for (var i = 0; i < markerArray.length; i++) {
+                bounds.extend(markerArray[i].position);
+            }
+            //  Fit these bounds to the map
+            map.fitBounds(bounds);
+        }
+
+        function updateDrainStatusClick(drainId) {
+
+            //Edit Drain Status Modal Form
+
+                $.get({
+                    url: "@Url.Action("EditDrainStatusModalContent", "Drain")",
+                    data: { drainIdToUdpate: drainId }
+                }).done(function (response, status, xhr) {
+                    $("#drainStatusUpdateModal").html(response);
+                    $('#drainStatusUpdateModal').modal('show');
+                });
+
+        }
+
+        //Save Drain Status
+        $("#drainStatusUpdateModal").on("submit", "#drainStatusUpdateForm", function (event) {
+            event.preventDefault();
+            $("#drainStatusUpdateModal").modal("hide");
+                var formData = $(this).serialize();
+                    $.post({
+                        url: "@Url.Action("UpdateDrainStatus", "Drain")",
+                        data: formData
+                    }).done(function (response, status, xhr) {
+                        window.location.reload();
+                    });
+            });
+    </script>
+}
+

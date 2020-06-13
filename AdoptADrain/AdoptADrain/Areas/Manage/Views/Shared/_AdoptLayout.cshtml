@@ -1,11 +1,14 @@
-﻿
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@inject IConfiguration configuration
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AdoptADrain</title>
-
     <environment include="Development">
         <link href="~/bootswatch/flatly/bootstrap.css" rel="stylesheet" />
         <link href="~/font-awesome/css/all.css" rel="stylesheet" />
@@ -23,57 +26,36 @@
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     </environment>
-
-
 </head>
 <body>
-
     <!-- Navigation -->
-    <nav class="navbar navbar-dark navbar-expand-lg aad-primary-color fixed-top">
+    <nav class="navbar navbar-dark navbar-expand aad-primary-color">
         <div class="container">
-            <ul class="mr-auto m-md-auto">
-                <li class="nav-item active"><a href="#WAAD">Why Adopt A Drain</a></li>
-                <li class="nav-item active"><a href="#AAD">Adopting A Drain</a></li>
-                <li class="nav-item active"><a href="#HTCAD">How To Clear A Drain</a></li>
-                <li class="nav-item active"><a href="#ABOUT">About Tampa's Adopt A Drain Program</a></li>
-                <li class="nav-item active"><a asp-controller="Drain" asp-action="Adopted" asp-area="Manage">Login</a></li>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a asp-controller="Drain" asp-action="Adopted" asp-area="Manage">Adopted Drains</a></li>
+                <li class="nav-item"><a asp-controller="Drain" asp-action="Adopt" asp-area="Manage">Adopt A Drain</a></li>
+                @*<li class="nav-item"><a asp-controller="Drain" asp-action="Register" asp-area="Adopt">Register Drain</a></li>*@
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle p-0" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profile
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item aad-primary-color" asp-controller="Session" asp-action="EditProfile" asp-area="">Edit</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-controller="Session" asp-action="SignOut" asp-area="">Logout</a>
+                    </div>
+                </li>
             </ul>
-            @*<a class="navbar-brand" asp-action="Index" asp-controller="Home" asp-area="">Tampa's Adopt A Drain</a>*@
-            @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav mr-auto m-md-auto">
-                        <li class="nav-item active"><a href="#WAAD">Why Adopt A Drain</a></li>
-                        <li class="nav-item active"><a href="#AAD">Adopting A Drain</a></li>
-                        <li class="nav-item active"><a href="#HTCAD">How To Clear A Drain</a></li>
-                        <li class="nav-item active"><a href="#ABOUT">About Tampa's Adopt A Drain Program</a></li>
-                        <li class="nav-item active">
-                        <a class="nav-link" asp-action="Index" asp-controller="Home" asp-area="">Home</a>
-                    </li>
-                        <li class="nav-item">
-                        <a class="nav-link" asp-action="About" asp-controller="Home" asp-area="">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="AdoptADrain" asp-controller="Home" asp-area="">Adopt A Drain</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="Contact" asp-controller="Home" asp-area="">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="CreditTo" asp-controller="Home" asp-area="">Sponsors</a>
-                    </li>
-                    </ul>
-                </div>*@
         </div>
     </nav>
 
     <!-- Page Content -->
-    <div class="pageContent">
+    <div class="adoptAreaContent">
         @RenderBody()
     </div>
+
     <!-- Footer -->
-    <footer class="py-3">
+    <footer class="py-3 mt-2">
         <div class="container">
             <p class="m-0 text-center text-white">&copy; @DateTime.Now.Year  Code for Tampa Bay </p>
         </div>
@@ -99,7 +81,6 @@
                 integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4="></script>
         <script src="~/font-awesome/js/all.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-
     </environment>
 
     @RenderSection("Scripts", required: false)

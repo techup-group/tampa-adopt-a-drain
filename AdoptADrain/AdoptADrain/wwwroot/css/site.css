@@ -45,17 +45,31 @@ p {
     margin-bottom: 15px;
 }
 
+a {
+    color: #212529;
+}
+a:hover {
+    color: initial;
+}
+
 li {
     font-size: .98em;
 }
 
+.row + .row {
+    margin-top: 15px;
+}
+
 .btn {
+    background-color: #217FD3;
+    border-radius: 24px;
+    border: 0;
+    padding: 6px 16px;
     font-size: 1.15rem;
+}
+.hero.btn {
     font-weight: 500;
     padding: 12px 28px;
-    border-radius: 24px;
-    background-color: #217FD3;
-    border: 0;
 }
     .btn:hover {
         background-color: #1672D3;
@@ -88,12 +102,30 @@ nav {
     .nav-item a {
         color: #FFF;
     }
-    @media (max-width: 991px ) {
-        .nav-item {
+        .nav-item .dropdown-menu a {
+            color: #212529;
         }
-    }
-.hero {
+.dropdown-item:hover, .dropdown-item:focus {
     background-color: #FFF;
+    color: #FFF;
+    text-decoration: underline;
+}
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+    color: #FFF;
+    text-decoration: underline;
+}
+.header {
+    background-color: #022730;
+    background-image: url(/img/hero.jpg);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #FFF;
+    margin-bottom: 30px;
+    padding: 12px 0;
+}
+.hero {
+    background-color: #022730;
     background-image: url(/img/hero.jpg);
     background-position: bottom;
     background-repeat: no-repeat;
@@ -106,7 +138,7 @@ nav {
         background-attachment: fixed;
         padding: 200px 0 180px
     }
-        .hero h1 {
+        .hero h1, .header h1 {
             font-size: 3rem;
         }
         h3, .h3 {
@@ -117,17 +149,25 @@ nav {
     .hero {
         padding: 150px 0 120px
     }
-        .hero h1 {
+        .hero h1, .header h1 {
             font-size: 2.5rem;
         }
-
         .hero h3 {
             font-size: 1.6rem;
         }
 }
-    .hero h3 {
-        color: #BAD5F2;
+@media (max-width: 500px ) {
+    .hero {
+        padding: 90px 0 120px;
     }
+    .navbar.fixed-top {
+        position: relative;
+        background-color: rgb(17, 44, 70);
+    }
+}
+.hero h3 {
+    color: #BAD5F2;
+}
 footer {
     background-color: RGB(17, 44, 70);
 }
@@ -436,3 +476,34 @@ input {
         opacity: 0.4;
     }
 }
+
+/***Adopt AREA****/
+.gm-ui-hover-effect img {
+    height: 24px !important;
+    width: 24px !important;
+    margin: 8px -2px !important;
+}
+#availableDrains table tbody a {
+    display: block;
+}
+#availableDrains table tbody tr:hover {
+    cursor: pointer;
+    background-color: #e8e8e8;
+}
+#availableDrains table tbody tr:hover a {
+    text-decoration: none;
+    color: initial;
+}
+/*@media (min-width: 501px) {
+    .adoptAreaContent {
+        padding-top: 53px;
+    }
+}*/
+
+/*
+    Wiregrass Boulevard, Wesley Chapel, FL, USA
+    Grand Oaks Blvd, Land O Lakes, FL, USA
+*/
+
+
+
